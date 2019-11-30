@@ -3,12 +3,19 @@ name: Docker Image CI
 on: [push]
 
 jobs:
-
   build:
-
+    name: Docker Build & Deploy
     runs-on: ubuntu-latest
-
+    env:
+      IMAGE_NAME: waf_build:latest
     steps:
     - uses: actions/checkout@v1
+    - name: Login the Docker Registry
+      run: docker login docker.pkg.github.com --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
-      run: docker build . --file .circleci/images/Dockerfile --tag waf_build:$(date +%s)
+      run: docker build . --tag "${IMAGE_NAME}" --file .circleci/images/Dockerfile
+    - name: Tag the Docker Image
+      run: docker tag ${IMAGE_NAME} docker.pkg.github.com/arko-afeka/finalproject/${IMAGE_NAME}
+    - name: Deploy the Docker Image
+      run: docker push docker.pkg.github.com/arko-afeka/finalproject/${IMAGE_NAME}
+  
