@@ -32,5 +32,11 @@
 *.app
 
 # Jetbrains
+.idea
 .idea/**
 *.iml
+
+# Maven
+target
+target/**
+pom.xml.versionsBackup
