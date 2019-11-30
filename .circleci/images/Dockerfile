@@ -7,3 +7,8 @@ RUN apt-get install -y software-properties-common
 RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 RUN apt-get install -y adoptopenjdk-11-hotspot
 RUN apt-get install -y maven
+RUN apt-get install -y ssh
+RUN apt-get install -y git
+RUN apt-get install -y tar
+RUN apt-get install -y gzip
+RUN apt-get install -y ca-certificates
