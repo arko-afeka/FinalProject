@@ -1,4 +1,4 @@
-dist: disco
+dist: bionic
 env: 
   global:
     DOCKER_REGISTRY: docker.pkg.github.com
@@ -16,6 +16,8 @@ jobs:
     - stage: build project
       language: java
       jdk: openjdk11
+      services:
+        - docker
       before_cache:
         - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
         - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
