@@ -1,0 +1,26 @@
+dist: disco
+
+env: 
+  global:
+    DOCKER_REGISTRY: docker.pkg.github.com
+    DOCKER_IMAGE: docker.pkg.github.com/arko-afeka/finalproject/waf_build
+jobs:
+  include:
+    - stage: build docker image
+      before_script:
+        - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
+        - docker pull $DOCKER_IMAGE:latest || true
+      script: 
+        - cd .travis
+        - docker build --cache-from $DOCKER_IMAGE:latest -t $DOCKER_IMAGE:latest .
+        - docker images
+      after_success:
+        - docker push $DOCKER_IMAGE:latest
+    - stage: build project
+      services: docker
+      before_install:
+        - docker pull $DOCKER_IMAGE:latest
+        - docker run $DOCKER_IMAGE:latest
+
+
+
