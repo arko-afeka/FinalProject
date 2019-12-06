@@ -19,6 +19,7 @@ jobs:
     - stage: build project
       services: docker
       before_install:
+        - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
         - docker pull $DOCKER_IMAGE:latest
         - docker run $DOCKER_IMAGE:latest
 
