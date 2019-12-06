@@ -18,4 +18,3 @@ jobs:
       run: docker tag ${IMAGE_NAME} docker.pkg.github.com/arko-afeka/finalproject/${IMAGE_NAME}
     - name: Deploy the Docker Image
       run: docker push docker.pkg.github.com/arko-afeka/finalproject/${IMAGE_NAME}
-  
