@@ -29,10 +29,9 @@ jobs:
         - cd src/java
         - ./gradlew build
         - ./gradlew distZip  
-        - cd waf/build/distributions
         - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
         - docker pull $DOCKER_IMAGE:latest || true
-        - docker build -f $HOME/src/docker/Dockerfile -t $DOCKER_IMAGE:latest ./
+        - docker build -f $HOME/src/docker/Dockerfile -t $DOCKER_IMAGE:latest $HOME/src/java/waf/build/distributions
 
 
 
