@@ -17,7 +17,6 @@ jobs:
       after_success:
         - docker push $DOCKER_IMAGE:latest
     - stage: build project
-      language: java
       services: docker
       before_install:
         - docker pull $DOCKER_IMAGE:latest
