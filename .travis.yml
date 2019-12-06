@@ -16,7 +16,8 @@ jobs:
     - stage: build project
       language: java
       jdk: openjdk11
-      services: docker
+      services: 
+        - docker
       before_script:
         - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
         - docker pull $DOCKER_IMAGE:latest || true
