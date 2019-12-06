@@ -26,14 +26,14 @@ jobs:
           - $HOME/.gradle/caches/
           - $HOME/.gradle/wrapper/
       script:
-        - mkdir $HOME/dist
-        - cd $HOME/src/java
+        - mkdir $TRAVIS_BUILD_DIR/dist
+        - cd $TRAVIS_BUILD_DIR/src/java
         - ./gradlew build
         - ./gradlew distZip  
-        - cd $HOME
-        - cp $HOME/src/java/waf/build/distributions/waf.tar $HOME/dist
-        - cp $HOME/src/docker/Dockerfile $HOME/dist
-        - cd $HOME/dist
+        - cd $TRAVIS_BUILD_DIR
+        - cp $TRAVIS_BUILD_DIR/src/java/waf/build/distributions/waf.tar $TRAVIS_BUILD_DIR/dist
+        - cp $TRAVIS_BUILD_DIR/src/docker/Dockerfile $TRAVIS_BUILD_DIR/dist
+        - cd $TRAVIS_BUILD_DIR/dist
         - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
         - docker pull $DOCKER_IMAGE:latest || true
         - docker build -t $DOCKER_IMAGE:latest .
