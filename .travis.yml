@@ -37,13 +37,11 @@ jobs:
         - cd $TRAVIS_BUILD_DIR/dist/waf
         - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
         - docker pull $DOCKER_IMAGE:latest || true
-        - docker build -t $DOCKER_IMAGE:latest .
-      deploy:
-        provider: script
-        script:
-          - docker tag $DOCKER_IMAGE:latest registry.heroku.com/arkokat-afeka-waf-staging/server
-          - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
-          - docker push registry.heroku.com/arkokat-afeka-waf-staging/server
+        - docker build --cache-from $DOCKER_IMAGE:latest -t $DOCKER_IMAGE:latest .
+      after_success:
+        - docker tag $DOCKER_IMAGE:latest registry.heroku.com/arkokat-afeka-waf-staging/server
+        - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
+        - docker push registry.heroku.com/arkokat-afeka-waf-staging/server
 
 
 
