@@ -6,9 +6,6 @@ env:
 jobs:
   include:
     # - stage: build docker image
-    #   before_script:
-    #     - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
-    #     - docker pull $DOCKER_IMAGE:latest || true
     #   script: 
     #     - cd .travis
     #     - docker build --cache-from $DOCKER_IMAGE:latest -t $DOCKER_IMAGE:latest .
@@ -19,6 +16,10 @@ jobs:
     - stage: build project
       language: java
       jdk: openjdk11
+      services: docker
+      before_script:
+        - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
+        - docker pull $DOCKER_IMAGE:latest || true
       before_cache:
         - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
         - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -29,7 +30,10 @@ jobs:
       script:
         - cd src/java
         - ./gradlew build
-        - ./gradlew distZip      
+        - ./gradlew distZip  
+        - cd waf/build/distributions
+        - docker build -f ~/src/docker/Dockerfile -t $DOCKER_IMAGE:latest ./
+
 
 
 
