@@ -16,9 +16,6 @@ jobs:
     - stage: build project
       language: java
       jdk: openjdk11
-      before_script:
-        - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
-        - docker pull $DOCKER_IMAGE:latest || true
       before_cache:
         - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
         - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -31,6 +28,8 @@ jobs:
         - ./gradlew build
         - ./gradlew distZip  
         - cd waf/build/distributions
+        - echo "$GITHUB_PACKAGES_TOKEN" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USERNAME --password-stdin
+        - docker pull $DOCKER_IMAGE:latest || true
         - docker build -f ~/src/docker/Dockerfile -t $DOCKER_IMAGE:latest ./
 
 
