@@ -1,8 +1,0 @@
- version: 2
- jobs:
-   build:
-     docker:
-       - image: src/build/Dockerfile
-     steps:
-       - checkout
-       - run: echo "A first hello"
