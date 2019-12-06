@@ -26,10 +26,6 @@ jobs:
         directories:
           - $HOME/.gradle/caches/
           - $HOME/.gradle/wrapper/
-      before_install:
-        - pwd
-        - ls -la
-        - chmod +x /.gradlew
       script:
         - cd src/java
         - ./gradlew build
