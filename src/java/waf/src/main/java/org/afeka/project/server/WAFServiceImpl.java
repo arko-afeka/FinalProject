@@ -1,13 +1,12 @@
 package org.afeka.project.server;
 
+import com.google.inject.Inject;
 import io.grpc.stub.StreamObserver;
 import org.afeka.project.waf.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WAFAPIService extends ServerAPIGrpc.ServerAPIImplBase {
-  private static final Logger LOG = LoggerFactory.getLogger(WAFAPIService.class);
-
+public class WAFServiceImpl extends WAFService {
   @Override
   public void isValidRequest(
       HTTPRequest httpRequest, StreamObserver<AnalysisStatus> responseObserver) {
