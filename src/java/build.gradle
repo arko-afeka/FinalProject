@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+
+    apply plugin: 'java'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+        testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.28'
+        compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
+        compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
+        compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.12.1'
+        compile group: 'com.google.inject', name: 'guice', version: '4.2.2'
+        compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+
+        implementation 'org.apache.commons:commons-lang3:3.9'
+    }
+}
+
