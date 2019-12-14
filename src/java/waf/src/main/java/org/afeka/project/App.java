@@ -16,11 +16,13 @@ public class App
     public static void main(String[] args )
     {
         Injector injector = Guice.createInjector(new WAFModule());
-        WAFServer server = injector.getInstance(WAFServer.class);
+        WAFBootstrap boostrap = injector.getInstance(WAFBootstrap.class);
 
         try {
+            WAFServer server = boostrap.getServer(8080);
             server.start();
             Thread.currentThread().wait();
+            server.stop();
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
         }

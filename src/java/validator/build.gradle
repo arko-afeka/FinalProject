@@ -2,3 +2,6 @@ plugins {
     id 'java'
 }
 
+dependencies {
+    compile project(':infrastructure')
+}
