@@ -1,7 +1,7 @@
 dist: bionic
 env: 
   global:
-    DOCKER_IMAGE: waf_build
+    DOCKER_IMAGE: arkokat/waf
 jobs:
   include:
     - stage: build project
@@ -17,22 +17,17 @@ jobs:
           - $HOME/.gradle/caches/
           - $HOME/.gradle/wrapper/
       script:
-        - mkdir $TRAVIS_BUILD_DIR/dist
-        - mkdir $TRAVIS_BUILD_DIR/dist/waf
-        - cd $TRAVIS_BUILD_DIR/src/java
+        - mkdir -p dist/waf
+        - cd src/java
         - ./gradlew build
         - ./gradlew distZip  
-        - cd $TRAVIS_BUILD_DIR
-        - cp $TRAVIS_BUILD_DIR/src/java/waf/build/distributions/waf.tar $TRAVIS_BUILD_DIR/dist/waf
-        - cp $TRAVIS_BUILD_DIR/src/docker/waf/Dockerfile $TRAVIS_BUILD_DIR/dist/waf
-        - cd $TRAVIS_BUILD_DIR/dist/waf
-        - docker build -t $DOCKER_IMAGE:latest .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        script: bash $TRAVIS_BUILD_DIR/.heroku/deploy.sh
-        on:
-          branch: master
+        - cp waf/build/distributions/waf.tar ../../dist/waf
+        - cp ../docker/waf/Dockerfile ../../dist/waf
+        - cd ../../dist/waf
+        - docker build -t ${DOCKER_IMAGE}:${TRAVIS_BRANCH}-${TRAVIS_PULL_REQUEST_BRANCH}${TRAVIS_JOB_ID} .
+      after_success:
+        - docker login -u arkokat -p ${DOCKER_PW}
+        - docker push arkokat/${DOCKER_IMAGE}:${TRAVIS_BRANCH}-${TRAVIS_PULL_REQUEST_BRANCH}${TRAVIS_JOB_ID}
 
 
 
