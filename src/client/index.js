@@ -1,5 +1,8 @@
-const app = require('./lib/reverse-proxy');
+const reverseProxy = require('./lib/reverseProxy'),
+    options = require('./config/options');
 
-const port = 5000;
+var app = new reverseProxy(options);
 
-app.listen(port, () => console.log(`server started at port ${port}`));
+app.listen(8081, () => {
+    console.log(`Server started!`)
+});
