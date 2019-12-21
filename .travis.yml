@@ -1,11 +1,12 @@
 dist: bionic
 env: 
   global:
-    DOCKER_IMAGE: arkokat/waf
 jobs:
   include:
     - stage: build project
       language: java
+      env:
+        DOCKER_IMAGE: arkokat/waf
       jdk: openjdk11
       services:
         - docker
@@ -24,10 +25,12 @@ jobs:
         - cp waf/build/distributions/waf.tar ../../dist/waf
         - cp ../docker/waf/Dockerfile ../../dist/waf
         - cd ../../dist/waf
-        - docker build -t $DOCKER_IMAGE:$TRAVIS_BRANCH-$TRAVIS_PULL_REQUEST_BRANCH$TRAVIS_JOB_ID .
+        - if [[ -z $TRAVIS_PULL_REQUEST_BRANCH ]]; then DOCKER_VERSION=$TRAVIS_BRANCH; else DOCKER_VERSION=$TRAVIS_BRANCH-$TRAVIS_PULL_REQUEST_BRANCH; fi
+        - docker build -t $DOCKER_IMAGE:$DOCKER_VERSION
       after_success:
         - echo $DOCKER_PW | docker login -u arkokat --password-stdin
-        - docker push $DOCKER_IMAGE:$TRAVIS_BRANCH-$TRAVIS_PULL_REQUEST_BRANCH$TRAVIS_JOB_ID
+        - docker push $DOCKER_IMAGE:$DOCKER_VERSION
+        - if [[ "$DOCKER_VERSION" == "master" ]]; then docker tag $DOCKER_IMAGE:$DOCKER_VERSION $DOCKER_IMAGE:latest; docker push $DOCKER_IMAGE:latest; fi
 
 
 
