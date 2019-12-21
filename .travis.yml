@@ -27,7 +27,7 @@ jobs:
         - cd ../../dist/waf
         - if [[ -z $TRAVIS_PULL_REQUEST_BRANCH ]]; then DOCKER_VERSION=$TRAVIS_BRANCH; else DOCKER_VERSION=$TRAVIS_BRANCH-$TRAVIS_PULL_REQUEST_BRANCH; fi
         - echo $DOCKER_IMAGE:$DOCKER_VERSION
-        - docker build -t $DOCKER_IMAGE:$DOCKER_VERSION
+        - docker build -t $DOCKER_IMAGE:$DOCKER_VERSION ./
       after_success:
         - echo $DOCKER_PW | docker login -u arkokat --password-stdin
         - docker push $DOCKER_IMAGE:$DOCKER_VERSION
