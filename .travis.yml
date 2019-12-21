@@ -24,10 +24,10 @@ jobs:
         - cp waf/build/distributions/waf.tar ../../dist/waf
         - cp ../docker/waf/Dockerfile ../../dist/waf
         - cd ../../dist/waf
-        - docker build -t ${DOCKER_IMAGE}:${TRAVIS_BRANCH}-${TRAVIS_PULL_REQUEST_BRANCH}${TRAVIS_JOB_ID} .
+        - docker build -t $DOCKER_IMAGE:$TRAVIS_BRANCH-$TRAVIS_PULL_REQUEST_BRANCH$TRAVIS_JOB_ID .
       after_success:
-        - echo ${DOCKER_PW} | docker login -u arkokat --password-stdin
-        - docker push arkokat/${DOCKER_IMAGE}:${TRAVIS_BRANCH}-${TRAVIS_PULL_REQUEST_BRANCH}${TRAVIS_JOB_ID}
+        - echo $DOCKER_PW | docker login -u arkokat --password-stdin
+        - docker push $DOCKER_IMAGE:$TRAVIS_BRANCH-$TRAVIS_PULL_REQUEST_BRANCH$TRAVIS_JOB_ID
 
 
 
