@@ -24,7 +24,11 @@ public class WAFServerImpl implements WAFServer {
     @Override
     public void start() throws IOException {
         server.start();
+    }
 
+    @Override
+    public void await() throws InterruptedException {
+        server.awaitTermination();
     }
 
     @Override
