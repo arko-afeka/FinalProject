@@ -18,7 +18,7 @@ public class App {
       Injector injector = Guice.createInjector(new WAFModule());
       WAFBootstrap boostrap = injector.getInstance(WAFBootstrap.class);
 
-      WAFServer server = boostrap.getServer(8080);
+      WAFServer server = boostrap.getServer(Integer.parseInt(System.getenv().getOrDefault("WAF_LISTEN_PORT", "8080")));
       server.start();
       server.await();
     } catch (IOException | InterruptedException ex) {
