@@ -3,7 +3,14 @@ env:
   global:
 jobs:
   include:
-    - stage: build project
+    - stage: test waf project
+      language: java
+      before_cache:
+        - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+        - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+        - cd src/java
+        - ./gradlew test
+    - stage: build waf project
       language: java
       env:
         DOCKER_IMAGE: arkokat/waf
