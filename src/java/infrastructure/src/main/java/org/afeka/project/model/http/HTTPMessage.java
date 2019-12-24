@@ -22,7 +22,20 @@ public class HTTPMessage {
         return headers;
     }
 
+    public HTTPMessageType getType() {
+        return firstLine.getType();
+    }
+
     public String getBody() {
         return body;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPMessage{" +
+                "firstLine=" + firstLine +
+                ", headers=" + headers +
+                ", body='" + body + '\'' +
+                '}';
     }
 }

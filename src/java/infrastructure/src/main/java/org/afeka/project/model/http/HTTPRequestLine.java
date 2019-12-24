@@ -43,4 +43,15 @@ public class HTTPRequestLine implements HTTPHeaderLine {
   public HTTPMessageType getType() {
     return HTTPMessageType.Request;
   }
+
+  @Override
+  public String toString() {
+    return "HTTPRequestLine{" +
+            "method=" + method +
+            ", uri='" + uri + '\'' +
+            ", majorVersion=" + majorVersion +
+            ", minorVersion=" + minorVersion +
+            ", queryParams=" + queryParams +
+            '}';
+  }
 }

@@ -35,4 +35,14 @@ public class HTTPResponseLine implements HTTPHeaderLine {
   public HTTPMessageType getType() {
     return HTTPMessageType.Response;
   }
+
+  @Override
+  public String toString() {
+    return "HTTPResponseLine{" +
+            "majorVersion=" + majorVersion +
+            ", minorVersion=" + minorVersion +
+            ", statusCode=" + statusCode +
+            ", statusPhrase='" + statusPhrase + '\'' +
+            '}';
+  }
 }

@@ -14,7 +14,7 @@ jobs:
       script:
         - cd src/java
         - ./gradlew test
-    - stage: build waf project
+    - stage: upload docker image
       language: java
       env:
         DOCKER_IMAGE: arkokat/waf
