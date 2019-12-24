@@ -1,10 +1,4 @@
 dist: bionic
-env:
-  global:
-    - CI_NODE_TOTAL=2
-  jobs:
-    - CI_NODE_INDEX=0
-    - CI_NODE_INDEX=1
 jobs:
   include:
     - stage: test waf project
