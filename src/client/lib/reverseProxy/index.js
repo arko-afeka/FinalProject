@@ -6,6 +6,7 @@
 const http = require("http"),
     middlewareHandler = require("../middlewareHandler"),
     reverseProxyErrors = require('./reverseProxyErrors'),
+    grpcClient = require('../grpcClient'),
     log = require('../log');
 
 class ReverseProxy {
@@ -13,8 +14,9 @@ class ReverseProxy {
      * Initialize a new `ReverseProxy`.
      *
      * @param {object} [options] Proxy's options
-     * @param {string} [options.host] The target host to proxy
-     * @param {number} [options.port] The target port
+     * @param {object} [options.targetHost] Target host to proxy
+     * @param {string} [options.targetHost.host] Target host address
+     * @param {number} [options.targetHost.port] Target port
      * @param {boolean} [options.log] enable logger
      * @api public
      */
@@ -43,6 +45,8 @@ class ReverseProxy {
         //     res.write("hello world!");
         //     res.end();
         // });
+
+        this.grpcClient = grpcClient;
     }
 
     /**

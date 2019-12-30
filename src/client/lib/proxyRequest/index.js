@@ -13,8 +13,8 @@ class ProxyRequest extends http.ClientRequest {
          */
 
         super({
-            host: req.global.host,
-            port: req.global.port,
+            host: req.global.targetHost.host,
+            port: req.global.targetHost.port,
             path: req.url,
             method: req.method,
             headers: req.headers
