@@ -1,5 +1,5 @@
 exports.create = function (options) {
-    if (!options.targetHost) {
+    if (!options.host) {
         throw Error('targetHost is required');
     }
     return options;
