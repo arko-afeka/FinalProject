@@ -11,6 +11,4 @@ const {
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const packageObject = grpc.loadPackageDefinition(packageDefinition);
 
-const grpcClient = new packageObject.api.ServerAPI(`${host}:${port}`, grpc.credentials.createInsecure());
-
-module.exports = grpcClient;
+module.exports = new packageObject.api.ServerAPI(`${host}:${port}`, grpc.credentials.createInsecure());

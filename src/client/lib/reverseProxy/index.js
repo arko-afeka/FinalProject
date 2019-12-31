@@ -32,6 +32,15 @@ class ReverseProxy {
             next();
         });
 
+        // Add grpcClient to req
+        this.use('request', (req, res, next) => {
+            req.grpcClient = grpcClient;
+            next();
+        });
+
+        this.use('request', require('../middlewares/prepareRawRequest'));
+
+
         if (this.global.log) {
             this.use('request', log.logIncommingRequest);
         }
@@ -45,8 +54,6 @@ class ReverseProxy {
         //     res.write("hello world!");
         //     res.end();
         // });
-
-        this.grpcClient = grpcClient;
     }
 
     /**
