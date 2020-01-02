@@ -24,7 +24,8 @@ public class ValidatorManagerImpl implements ValidatorManager {
     AnalysisResultState result =
         validations
             .parallelStream()
-            .filter(ValidationModule::validateRequest)
+            .filter(
+                validationModule -> validationModule.messsageTypes().contains(message.getType()))
             .map(validationModule -> validationModule.analyse(message))
             .filter(AnalysisResultState.BLOCK::equals)
             .findFirst()
@@ -45,13 +46,11 @@ public class ValidatorManagerImpl implements ValidatorManager {
     AnalysisResultState analysisResultState =
         validations
             .parallelStream()
-            .filter(ValidationModule::validatesResponse)
             .filter(
-                validationModule ->
-                    validationModule.requiresContext() && Objects.nonNull(fromStorage))
+                validationModule -> validationModule.messsageTypes().contains(message.getType()))
             .map(
                 validationModule ->
-                    validationModule.requiresContext()
+                    Objects.nonNull(fromStorage)
                         ? validationModule.analyseWithContext(message, fromStorage)
                         : validationModule.analyse(message))
             .filter(AnalysisResultState.BLOCK::equals)

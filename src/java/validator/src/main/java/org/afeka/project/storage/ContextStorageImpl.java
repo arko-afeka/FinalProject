@@ -11,16 +11,17 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class ContextStorageImpl implements ContextStorage, RemovalListener<UUID, HTTPMessage> {
   private static final Logger log = LoggerFactory.getLogger(ContextStorage.class);
   private Cache<UUID, HTTPMessage> context;
 
   @Inject
-  public ContextStorageImpl(@Assisted int storageTimeSeconds) {
+  public ContextStorageImpl(@StorageDuration Duration storageTime) {
     context =
         CacheBuilder.newBuilder()
-            .expireAfterWrite(Duration.ofSeconds(storageTimeSeconds))
+            .expireAfterWrite(storageTime.toMillis(), TimeUnit.MILLISECONDS)
             .removalListener(this)
             .build();
   }
