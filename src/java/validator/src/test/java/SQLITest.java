@@ -90,6 +90,7 @@ public class SQLITest {
     } else {
       throw new RuntimeException("Test");
     }
+
     assertEquals(result, module.analyse(new HTTPMessageParserImpl().getMessage(buffer.toString())));
   }
 }

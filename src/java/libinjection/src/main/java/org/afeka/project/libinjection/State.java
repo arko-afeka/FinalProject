@@ -1,6 +1,6 @@
 package org.afeka.project.libinjection;
 
-class State {
+public class State {
 
   String s; /* input string */
   int slen; /* length of input */
@@ -44,5 +44,13 @@ class State {
       }
       System.out.println();
     }
+  }
+
+  public Token[] getTokenvec() {
+    return tokenvec;
+  }
+
+  public String getFingerprint() {
+    return fingerprint;
   }
 }

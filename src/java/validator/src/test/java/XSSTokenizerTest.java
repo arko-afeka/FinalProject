@@ -30,8 +30,6 @@ public class XSSTokenizerTest {
   private Tokenizer tokenizer;
   private List<Token> tokens;
 
-  @Rule public TestName testName = new TestName();
-
   public XSSTokenizerTest(String fileName, File currentFile) {
     this.currentFile = currentFile;
   }
@@ -40,8 +38,7 @@ public class XSSTokenizerTest {
   public void initialize() throws FileNotFoundException {
     Scanner sc = new Scanner(currentFile);
     sc.nextLine();
-    String testName = sc.nextLine();
-    testName = testName.replaceAll(".*", testName);
+    sc.nextLine();
     sc.nextLine();
     String input = sc.nextLine();
     sc.nextLine();

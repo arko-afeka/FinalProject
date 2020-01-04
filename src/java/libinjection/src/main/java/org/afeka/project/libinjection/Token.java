@@ -1,6 +1,6 @@
 package org.afeka.project.libinjection;
 
-class Token {
+public class Token {
   char type;
   char str_open;
   char str_close;
@@ -25,5 +25,13 @@ class Token {
     System.out.printf("Number of '@': %d\n", count);
     System.out.printf("String open:  %c\n", str_open);
     System.out.printf("String close: %c\n", str_close);
+  }
+
+  public char getType() {
+    return type;
+  }
+
+  public String getVal() {
+    return val;
   }
 }
