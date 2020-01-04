@@ -6,13 +6,11 @@ import org.afeka.project.server.WAFServer;
 import org.afeka.project.server.WAFServerFactory;
 
 public class WAFBootstrap extends AbstractModule {
-    @Inject private WAFServerFactory factory;
+  @Inject private WAFServerFactory factory;
 
-    public WAFBootstrap() {
+  public WAFBootstrap() {}
 
-    }
-
-    WAFServer getServer(int port) {
-        return factory.create(port);
-    }
+  WAFServer getServer(int port) {
+    return factory.create(port);
+  }
 }

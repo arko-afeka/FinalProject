@@ -8,31 +8,31 @@ import io.grpc.ServerBuilder;
 import java.io.IOException;
 
 public class WAFServerImpl implements WAFServer {
-    private final int port;
-    private final Server server;
+  private final int port;
+  private final Server server;
 
-    @Inject
-    public WAFServerImpl(@Assisted int port, WAFService service) {
-        this(ServerBuilder.forPort(port), port, service);
-    }
+  @Inject
+  public WAFServerImpl(@Assisted int port, WAFService service) {
+    this(ServerBuilder.forPort(port), port, service);
+  }
 
-    private WAFServerImpl(ServerBuilder<?> builder, int port, WAFService service) {
-        this.port = port;
-        this.server = builder.addService(service).build();
-    }
+  private WAFServerImpl(ServerBuilder<?> builder, int port, WAFService service) {
+    this.port = port;
+    this.server = builder.addService(service).build();
+  }
 
-    @Override
-    public void start() throws IOException {
-        server.start();
-    }
+  @Override
+  public void start() throws IOException {
+    server.start();
+  }
 
-    @Override
-    public void await() throws InterruptedException {
-        server.awaitTermination();
-    }
+  @Override
+  public void await() throws InterruptedException {
+    server.awaitTermination();
+  }
 
-    @Override
-    public void stop() throws IOException {
-        server.shutdownNow();
-    }
+  @Override
+  public void stop() throws IOException {
+    server.shutdownNow();
+  }
 }

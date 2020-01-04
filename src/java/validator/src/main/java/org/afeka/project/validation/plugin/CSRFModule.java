@@ -9,18 +9,18 @@ import org.afeka.project.validation.ValidationModule;
 import java.util.Set;
 
 public class CSRFModule implements ValidationModule {
-    @Override
-    public AnalysisResultState analyse(HTTPMessage message) {
-        return AnalysisResultState.ALLOW;
-    }
+  @Override
+  public AnalysisResultState analyse(HTTPMessage message) {
+    return AnalysisResultState.ALLOW;
+  }
 
-    @Override
-    public AnalysisResultState analyseWithContext(HTTPMessage message, HTTPMessage fromStorage) {
-        return AnalysisResultState.ALLOW;
-    }
+  @Override
+  public AnalysisResultState analyseWithContext(HTTPMessage message, HTTPMessage fromStorage) {
+    return AnalysisResultState.ALLOW;
+  }
 
-    @Override
-    public Set<HTTPMessageType> messsageTypes() {
-        return ImmutableSet.of(HTTPMessageType.Request, HTTPMessageType.Response);
-    }
+  @Override
+  public Set<HTTPMessageType> messsageTypes() {
+    return ImmutableSet.of(HTTPMessageType.Request, HTTPMessageType.Response);
+  }
 }

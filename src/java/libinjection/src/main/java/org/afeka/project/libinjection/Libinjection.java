@@ -71,7 +71,7 @@ public class Libinjection {
     this.state = new State(input, input.length(), 0);
     boolean issqli = libinjection_is_sqli();
 
-//    output = issqli + " : " + state.fingerprint;
+    //    output = issqli + " : " + state.fingerprint;
     return issqli;
   }
 

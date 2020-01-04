@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public class ValidatorManagerImpl implements ValidatorManager {
-  @Inject private ContextStorage storage;
   private final Set<ValidationModule> validations;
+  @Inject private ContextStorage storage;
 
   @Inject
   public ValidatorManagerImpl(Set<ValidationModule> validations) {

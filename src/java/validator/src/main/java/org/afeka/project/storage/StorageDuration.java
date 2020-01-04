@@ -7,5 +7,4 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 @BindingAnnotation
-public @interface StorageDuration {
-}
+public @interface StorageDuration {}

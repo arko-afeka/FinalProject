@@ -1,32 +1,78 @@
 package org.afeka.project.validation.plugin.xss.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class StringReader {
-    private String data;
-    private int pos = 0;
+  private String data;
+  private int pos = 0;
 
-    private StringReader(String data) {
-        this.data = data;
+  public StringReader(String data) {
+    this.data = data;
+  }
+
+  public boolean isBeginning() {
+    return pos == 0;
+  }
+
+  public int indexOf(char c) {
+    int result = this.data.indexOf(c, pos);
+
+    if (result == -1) {
+      return result;
     }
 
-    public boolean isBeginning() {
-        return pos == 0;
+    return result - pos;
+  }
+
+  public int indexOf(char c, int begin) {
+    int result = this.data.indexOf(c, pos + begin);
+
+    if (result == -1) {
+      return result;
     }
 
-    public int indexOf(char c) {
-        return this.data.indexOf(c, pos);
+    return result - pos;
+  }
+
+  public String subString(int len) {
+    String data = this.data.substring(pos, pos + len);
+    pos += len;
+    return data;
+  }
+
+  public void move(int len) {
+    pos += len;
+  }
+
+  public boolean startsWithIgnoreCase(String data) {
+    if (size() - data.length() < 0) {
+      return false;
     }
 
-    public String subString(int len) {
-        String data = this.data.substring(pos, len);
-        pos += len;
-        return data;
+    return StringUtils.startsWithIgnoreCase(this.data.substring(pos), data);
+  }
+
+  public boolean startsWith(String data) {
+    if (size() - data.length() < 0) {
+      return false;
     }
 
-    public void advance(int len) {
-        pos += len;
-    }
+    return StringUtils.startsWith(this.data.substring(pos), data);
+  }
 
-    public int size() {
-        return data.length() - pos;
-    }
+  public char peek() {
+    return data.charAt(pos);
+  }
+
+  public char peek(int ind) {
+    return data.charAt(pos + ind);
+  }
+
+  public int position() {
+    return 0;
+  }
+
+  public int size() {
+    return data.length() - pos;
+  }
 }

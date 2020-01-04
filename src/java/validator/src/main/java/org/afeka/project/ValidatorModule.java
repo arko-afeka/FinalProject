@@ -1,7 +1,6 @@
 package org.afeka.project;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
 import org.afeka.project.storage.ContextStorage;

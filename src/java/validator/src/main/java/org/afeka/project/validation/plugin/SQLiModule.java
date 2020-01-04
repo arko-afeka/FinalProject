@@ -1,11 +1,7 @@
 package org.afeka.project.validation.plugin;
 
 import com.google.common.collect.ImmutableSet;
-import net.sf.jsqlparser.JSQLParserException;
-import net.sf.jsqlparser.parser.CCJSqlParser;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import org.afeka.project.libinjection.Libinjection;
-import org.afeka.project.model.AnalysisResult;
 import org.afeka.project.model.AnalysisResultState;
 import org.afeka.project.model.http.HTTPMessage;
 import org.afeka.project.model.http.HTTPMessageType;

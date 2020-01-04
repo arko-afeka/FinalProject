@@ -8,6 +8,7 @@ import org.afeka.project.model.http.HTTPMessage;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.net.http.HttpRequest;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,7 @@ public class HTTPMessageParserImpl extends AbstractModule implements HTTPMessage
 
       if (data.startsWith(HTTPConstant.HTTP_VERSION_PREFIX + HTTPConstant.HTTP_VERSION_SEPRATOR)) {
         headerLine = new HTTPResponseLineParser(reader.readLine()).parse();
-      } else if (!data.startsWith(HTTPConstant.SEPERATOR)){
+      } else if (!data.startsWith(HTTPConstant.SEPERATOR)) {
         headerLine = new HTTPRequestLineParser(reader.readLine()).parse();
       } else {
         throw new HTTPStructureException(String.format("Starts with whitespace %s", data));

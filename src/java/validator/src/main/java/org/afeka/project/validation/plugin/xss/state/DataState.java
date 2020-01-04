@@ -5,37 +5,37 @@ import org.afeka.project.validation.plugin.xss.model.Token;
 import org.afeka.project.validation.plugin.xss.model.TokenType;
 import org.afeka.project.validation.plugin.xss.util.StringReader;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-
 public class DataState extends State {
   public DataState(StringReader data) {
     super(data);
   }
 
+  protected DataState(State state) {
+    super(state);
+  }
+
   @Override
-  void run() {
+  public void run() {
     int idx = data.indexOf(SpecialChar.LT);
 
     if (idx == -1) {
-      token = new Token(data.toString(), TokenType.DATA_TEXT);
+      token = new Token(data.subString(data.size()), TokenType.DATA_TEXT);
+      nextState = new EOFState(this);
 
       if (token.getToken().length() == 0) {
         shouldContinue = false;
+        token = null;
         return;
       }
-
-      nextState = new EOFState(data);
     } else {
-      token = new Token(data.subString(0, idx), TokenType.DATA_TEXT);
-      data.delete(0, idx);
-
+      token = new Token(data.subString(idx), TokenType.DATA_TEXT);
+      data.move(1);
       if (token.getToken().length() == 0) {
-        setFromState(new TagOpenState(data));
+        setFromState(new TagOpenState(this));
         return;
       }
 
-      nextState = new TagOpenState(data);
+      nextState = new TagOpenState(this);
     }
 
     shouldContinue = true;

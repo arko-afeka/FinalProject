@@ -1,4 +1,3 @@
 package org.afeka.project.data;
 
-public class UTF8ToUnicode {
-}
+public class UTF8ToUnicode {}

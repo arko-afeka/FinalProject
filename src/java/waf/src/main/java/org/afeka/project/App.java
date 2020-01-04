@@ -23,7 +23,8 @@ public class App {
       WAFBootstrap bootstrap = injector.getInstance(WAFBootstrap.class);
 
       int port = Integer.parseInt(System.getenv().getOrDefault("WAF_LISTEN_PORT", "8080"));
-      logger.info("Port used for listening {}", port);;
+      logger.info("Port used for listening {}", port);
+      ;
 
       WAFServer server = bootstrap.getServer(port);
       server.start();

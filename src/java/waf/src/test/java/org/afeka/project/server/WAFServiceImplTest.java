@@ -16,8 +16,6 @@
 
 package org.afeka.project.server;
 
-import static org.junit.Assert.assertEquals;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.grpc.inprocess.InProcessChannelBuilder;
@@ -31,8 +29,8 @@ import org.afeka.project.waf.api.ServerAPIGrpc;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+
+import static org.junit.Assert.assertEquals;
 
 public class WAFServiceImplTest {
   @Rule public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();

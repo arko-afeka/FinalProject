@@ -1,7 +1,6 @@
 package org.afeka.project.validation;
 
 import org.afeka.project.model.AnalysisResult;
-import org.afeka.project.model.AnalysisResultState;
 import org.afeka.project.model.http.HTTPMessage;
 
 import java.util.UUID;

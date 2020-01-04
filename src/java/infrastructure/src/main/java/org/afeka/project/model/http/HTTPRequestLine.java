@@ -9,7 +9,12 @@ public class HTTPRequestLine implements HTTPHeaderLine {
   private int minorVersion;
   private Map<String, String> queryParams;
 
-  public HTTPRequestLine(HTTPMethod method, String uri, Map<String, String> queryParams, int majorVersion, int minorVersion) {
+  public HTTPRequestLine(
+      HTTPMethod method,
+      String uri,
+      Map<String, String> queryParams,
+      int majorVersion,
+      int minorVersion) {
     this.method = method;
     this.uri = uri;
     this.majorVersion = majorVersion;
@@ -46,12 +51,18 @@ public class HTTPRequestLine implements HTTPHeaderLine {
 
   @Override
   public String toString() {
-    return "HTTPRequestLine{" +
-            "method=" + method +
-            ", uri='" + uri + '\'' +
-            ", majorVersion=" + majorVersion +
-            ", minorVersion=" + minorVersion +
-            ", queryParams=" + queryParams +
-            '}';
+    return "HTTPRequestLine{"
+        + "method="
+        + method
+        + ", uri='"
+        + uri
+        + '\''
+        + ", majorVersion="
+        + majorVersion
+        + ", minorVersion="
+        + minorVersion
+        + ", queryParams="
+        + queryParams
+        + '}';
   }
 }

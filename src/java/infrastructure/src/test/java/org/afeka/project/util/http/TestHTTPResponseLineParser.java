@@ -31,7 +31,7 @@ public class TestHTTPResponseLineParser {
   @Test
   public void testMoreSections() throws Exception {
     String request = "HTTP/1.1 200 Success test";
-    HTTPResponseLine result = (HTTPResponseLine)(new HTTPResponseLineParser(request).parse());
+    HTTPResponseLine result = (HTTPResponseLine) (new HTTPResponseLineParser(request).parse());
     assertEquals(1, result.getHTTPMajorVersion());
     assertEquals(1, result.getHTTPMinorVersion());
     assertEquals(200, result.getStatusCode());
@@ -53,7 +53,7 @@ public class TestHTTPResponseLineParser {
   @Test
   public void testValid() throws Exception {
     String request = "HTTP/2.5 404 Not Found";
-    HTTPResponseLine result = (HTTPResponseLine)(new HTTPResponseLineParser(request).parse());
+    HTTPResponseLine result = (HTTPResponseLine) (new HTTPResponseLineParser(request).parse());
     assertEquals(2, result.getHTTPMajorVersion());
     assertEquals(5, result.getHTTPMinorVersion());
     assertEquals(404, result.getStatusCode());
@@ -61,7 +61,7 @@ public class TestHTTPResponseLineParser {
   }
 
   @Test
-  public void testValidExtraSpaces() throws Exception{
+  public void testValidExtraSpaces() throws Exception {
     String request = "    HTTP/2.5  200 SUccess   ";
     new HTTPResponseLineParser(request).parse();
   }

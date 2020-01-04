@@ -3,8 +3,6 @@ package org.afeka.project.util.http;
 import com.google.common.collect.ImmutableMap;
 import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.model.http.*;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

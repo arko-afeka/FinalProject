@@ -1,4 +1,3 @@
 package org.afeka.project.model;
 
-public enum DataNormalizerType {
-}
+public enum DataNormalizerType {}

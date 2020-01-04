@@ -1,8 +1,9 @@
 package org.afeka.project.model.http;
 
 public interface HTTPHeaderLine {
-    HTTPMessageType getType();
+  HTTPMessageType getType();
 
-    int getHTTPMajorVersion();
-    int getHTTPMinorVersion();
+  int getHTTPMajorVersion();
+
+  int getHTTPMinorVersion();
 }

@@ -2,14 +2,11 @@ package org.afeka.project.storage;
 
 import com.google.common.cache.*;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.internal.asm.$AnnotationVisitor;
 import org.afeka.project.model.http.HTTPMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -28,10 +25,9 @@ public class ContextStorageImpl implements ContextStorage, RemovalListener<UUID,
 
   @Override
   public void onRemoval(RemovalNotification<UUID, HTTPMessage> notification) {
-      if (notification.getCause() == RemovalCause.EXPIRED) {
-          log.info(
-                  "Didn't get response for {} = {}", notification.getKey(), notification.getValue());
-      }
+    if (notification.getCause() == RemovalCause.EXPIRED) {
+      log.info("Didn't get response for {} = {}", notification.getKey(), notification.getValue());
+    }
   }
 
   @Override

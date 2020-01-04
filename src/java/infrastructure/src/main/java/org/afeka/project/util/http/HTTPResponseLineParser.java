@@ -4,7 +4,6 @@ import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.model.http.HTTPConstant;
 import org.afeka.project.model.http.HTTPHeaderLine;
 import org.afeka.project.model.http.HTTPResponseLine;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -58,7 +57,8 @@ public class HTTPResponseLineParser extends HTTPHeaderLineParser {
           numericVersion.getLeft(),
           numericVersion.getRight(),
           statusCode,
-          StringUtils.join(this.lineParts.subList(2, this.lineParts.size()), HTTPConstant.SEPERATOR));
+          StringUtils.join(
+              this.lineParts.subList(2, this.lineParts.size()), HTTPConstant.SEPERATOR));
     } catch (Exception ex) {
       throw new HTTPStructureException(
           String.format(

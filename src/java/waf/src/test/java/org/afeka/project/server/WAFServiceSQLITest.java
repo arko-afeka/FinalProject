@@ -21,7 +21,6 @@ import com.google.inject.Injector;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.testing.GrpcCleanupRule;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import org.afeka.project.WAFModule;
 import org.afeka.project.waf.api.HTTPRequest;
 import org.afeka.project.waf.api.Ping;
@@ -63,7 +62,9 @@ public class WAFServiceSQLITest {
   public void testHTTPRequest() throws Exception {
     stub.isValidRequest(
         HTTPRequest.newBuilder()
-            .setData("GET /pub/WWW/TheProject.html?test=%27%20OR%201%3D1-- HTTP/1.1\r\n" + "Host: www.w3.org\r\n\r\n")
+            .setData(
+                "GET /pub/WWW/TheProject.html?test=%27%20OR%201%3D1-- HTTP/1.1\r\n"
+                    + "Host: www.w3.org\r\n\r\n")
             .build());
   }
 

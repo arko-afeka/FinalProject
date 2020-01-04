@@ -2,42 +2,76 @@ package org.afeka.project.validation.plugin.xss.state;
 
 import org.afeka.project.validation.plugin.xss.model.SpecialChar;
 import org.afeka.project.validation.plugin.xss.model.Token;
+import org.afeka.project.validation.plugin.xss.model.TokenType;
+import org.afeka.project.validation.plugin.xss.util.StringReader;
 import org.apache.commons.lang3.CharUtils;
 
-import java.nio.CharBuffer;
-
 public class TagOpenState extends State {
-    protected TagOpenState(StringBuffer data) {
-        super(data);
+  public TagOpenState(StringReader data) {
+    super(data);
+  }
+
+  protected TagOpenState(State state) {
+    super(state);
+  }
+
+  @Override
+  public void run() {
+    if (data.size() <= 0) {
+      shouldContinue = false;
+      token = null;
+      return;
     }
 
-    @Override
-    void run() {
-        char cur = data.charAt();
-        switch (cur) {
-            case (SpecialChar.BANG): {
-                break;
+    char cur = data.peek();
+    switch (cur) {
+      case (SpecialChar.BANG):
+        {
+          data.move(1);
+          setFromState(new MarkupDeclarationOpen(this));
+          break;
+        }
+      case (SpecialChar.SLASH):
+        {
+          data.move(1);
+          isClose = true;
+          setFromState(new TagEndState(this));
+          break;
+        }
+      case (SpecialChar.QUESTION):
+        {
+          data.move(1);
+          setFromState(new BogusCommentState(this));
+          break;
+        }
+      case (SpecialChar.PERCENT):
+        {
+          data.move(1);
+          setFromState(new BogusCommentState2(this));
+          break;
+        }
+      case (SpecialChar.NULL):
+        {
+          setFromState(new TagNameState(this));
+          break;
+        }
+      default:
+        {
+          if (CharUtils.isAsciiAlpha(cur)) {
+            setFromState(new TagNameState(this));
+          } else {
+            if (data.isBeginning()) {
+              setFromState(new DataState(this));
+              return;
             }
-            case (SpecialChar.SLASH): {
-                break;
-            }
-            case (SpecialChar.QUESTION): {
-                break;
-            }
-            case (SpecialChar.PERCENT): {
-                break;
-            }
-            case (SpecialChar.NULL): {
-                break;
-            }
-            default: {
-                if (CharUtils.isAsciiAlpha(cur)) {
-                    data.trimToSize();
-                } else {
-                    token =
-                }
-                break;
-            }
+
+            nextState = new DataState(this);
+            data.move(-1);
+            token = new Token(data.subString(1), TokenType.DATA_TEXT);
+            shouldContinue = true;
+          }
+          break;
         }
     }
+  }
 }
