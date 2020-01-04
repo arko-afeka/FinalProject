@@ -16,7 +16,8 @@ allprojects {
 
     dependencies {
         testCompile 'junit:junit:4.12'
-        testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.28'
+        testCompile group: 'com.google.code.guice-repository', name: 'guice-repository', version: '2.0.1'
+
         compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
         compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
         compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.12.1'

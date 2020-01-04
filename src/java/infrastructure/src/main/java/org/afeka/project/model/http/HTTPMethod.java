@@ -20,13 +20,14 @@ public enum HTTPMethod {
     this.method = method;
   }
 
-  public String getMethod() {
-    return method;
-  }
-
   public static HTTPMethod forName(String method) {
     return Arrays.stream(HTTPMethod.values())
         .filter(HTTPMethodEnum -> HTTPMethodEnum.getMethod().equals(method.toUpperCase()))
-        .findFirst().orElse(UNKNOWN);
+        .findFirst()
+        .orElse(UNKNOWN);
+  }
+
+  public String getMethod() {
+    return method;
   }
 }

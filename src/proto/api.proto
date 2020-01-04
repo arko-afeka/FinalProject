@@ -7,9 +7,12 @@ option java_outer_classname = "WAFApiGRPC";
 package api;
 
 service ServerAPI {
-    rpc IsValidRequest (HTTPRequest) returns (AnalysisStatus) {}
-    rpc IsValidResponse (HTTPResponse) returns (AnalysisStatus) {}
-    rpc ping (Ping) returns (Pong) {}
+    rpc IsValidRequest (HTTPRequest) returns (AnalysisStatus) {
+    }
+    rpc IsValidResponse (HTTPResponse) returns (AnalysisStatus) {
+    }
+    rpc ping (Ping) returns (Pong) {
+    }
 }
 
 message Ping {

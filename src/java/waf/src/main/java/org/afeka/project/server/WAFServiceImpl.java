@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import io.grpc.stub.StreamObserver;
 import org.afeka.project.model.AnalysisResult;
 import org.afeka.project.model.AnalysisResultState;
-import org.afeka.project.model.http.HTTPMessage;
 import org.afeka.project.server.factory.AnalysisStatusConverter;
 import org.afeka.project.util.http.HTTPMessageParser;
 import org.afeka.project.validation.ValidatorManager;
@@ -24,7 +23,10 @@ public class WAFServiceImpl extends WAFService {
   public void isValidRequest(
       HTTPRequest httpRequest, StreamObserver<AnalysisStatus> responseObserver) {
     try {
-      validatorManager.validate(parser.getMessage(httpRequest.getData()));
+      responseObserver.onNext(
+          new AnalysisStatusConverter(
+                  validatorManager.validateRequest(parser.getMessage(httpRequest.getData())))
+              .getResult());
     } catch (Exception ex) {
       log.error("Couldn't process the message blocking", ex);
       responseObserver.onNext(
@@ -39,9 +41,12 @@ public class WAFServiceImpl extends WAFService {
   public void isValidResponse(
       HTTPResponse httpResponse, StreamObserver<AnalysisStatus> responseObserver) {
     try {
-      validatorManager.validateWithContext(
-          parser.getMessage(httpResponse.getData()),
-          UUID.nameUUIDFromBytes(httpResponse.getUuid().getData().toByteArray()));
+      responseObserver.onNext(
+          new AnalysisStatusConverter(
+                  validatorManager.validateResponse(
+                      parser.getMessage(httpResponse.getData()),
+                      UUID.nameUUIDFromBytes(httpResponse.getUuid().getData().toByteArray())))
+              .getResult());
     } catch (Exception ex) {
       log.error("Couldn't process the message blocking", ex);
       responseObserver.onNext(

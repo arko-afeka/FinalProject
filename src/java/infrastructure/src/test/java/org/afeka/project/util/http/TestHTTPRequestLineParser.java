@@ -1,8 +1,6 @@
 package org.afeka.project.util.http;
 
 import org.afeka.project.exception.HTTPStructureException;
-import org.afeka.project.model.http.HTTPHeader;
-import org.afeka.project.model.http.HTTPHeaderLine;
 import org.afeka.project.model.http.HTTPMethod;
 import org.afeka.project.model.http.HTTPRequestLine;
 import org.junit.Test;
@@ -52,7 +50,7 @@ public class TestHTTPRequestLineParser {
   @Test
   public void testValid() throws Exception {
     String request = "GET / HTTP/1.1";
-    HTTPRequestLine result = (HTTPRequestLine)(new HTTPRequestLineParser(request).parse());
+    HTTPRequestLine result = (HTTPRequestLine) (new HTTPRequestLineParser(request).parse());
 
     assertEquals(HTTPMethod.GET, result.getMethod());
     assertEquals("/", result.getUri());
@@ -64,14 +62,14 @@ public class TestHTTPRequestLineParser {
   public void testValidExtraSpaces() throws Exception {
     String request = "    GET  /  HTTP/1.1   ";
 
-    HTTPRequestLine result = (HTTPRequestLine)(new HTTPRequestLineParser(request).parse());
+    HTTPRequestLine result = (HTTPRequestLine) (new HTTPRequestLineParser(request).parse());
   }
 
   @Test
   public void testValidPostWIthURIAndDiffVersion() throws Exception {
     String request = "POST /users/valid?id=1 HTTP/1.0";
 
-    HTTPRequestLine result = (HTTPRequestLine)(new HTTPRequestLineParser(request).parse());
+    HTTPRequestLine result = (HTTPRequestLine) (new HTTPRequestLineParser(request).parse());
 
     assertEquals(HTTPMethod.POST, result.getMethod());
     assertEquals("/users/valid?id=1", result.getUri());

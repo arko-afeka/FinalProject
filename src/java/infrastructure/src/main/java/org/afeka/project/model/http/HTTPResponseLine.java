@@ -38,11 +38,16 @@ public class HTTPResponseLine implements HTTPHeaderLine {
 
   @Override
   public String toString() {
-    return "HTTPResponseLine{" +
-            "majorVersion=" + majorVersion +
-            ", minorVersion=" + minorVersion +
-            ", statusCode=" + statusCode +
-            ", statusPhrase='" + statusPhrase + '\'' +
-            '}';
+    return "HTTPResponseLine{"
+        + "majorVersion="
+        + majorVersion
+        + ", minorVersion="
+        + minorVersion
+        + ", statusCode="
+        + statusCode
+        + ", statusPhrase='"
+        + statusPhrase
+        + '\''
+        + '}';
   }
 }

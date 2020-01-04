@@ -1,11 +1,16 @@
 package org.afeka.project.util.http;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import org.afeka.project.exception.HTTPStructureException;
-import org.afeka.project.model.http.*;
+import org.afeka.project.model.http.HTTPConstant;
+import org.afeka.project.model.http.HTTPHeaderLine;
+import org.afeka.project.model.http.HTTPMethod;
+import org.afeka.project.model.http.HTTPRequestLine;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +27,14 @@ public class HTTPRequestLineParser extends HTTPHeaderLineParser {
   }
 
   Map<String, String> getParams(String paramsStr) {
+    if (paramsStr.endsWith("#")) {
+      paramsStr = paramsStr.substring(0, paramsStr.length() - 2);
+    }
+
     String[] paramsData = paramsStr.split("&");
     Map<String, String> values = Maps.newHashMap();
 
-    Arrays.stream(paramsData)
+    Arrays.stream(paramsData).parallel()
         .forEach(
             param -> {
               int equaliLoc = param.indexOf("=");
@@ -33,9 +42,10 @@ public class HTTPRequestLineParser extends HTTPHeaderLineParser {
               String value = null;
 
               if (equaliLoc != -1 && equaliLoc != (param.length() - 1)) {
-                value = param.substring(equaliLoc + 1);
+                value = URLDecoder.decode(param.substring(equaliLoc + 1), Charsets.UTF_8);
               } else {
                 equaliLoc = param.length();
+                value = param.substring(0, equaliLoc);
               }
 
               values.put(param.substring(0, equaliLoc), value);

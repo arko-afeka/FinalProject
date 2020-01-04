@@ -1,0 +1,7 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile 'org.ahocorasick:ahocorasick:0.4.0'
+}

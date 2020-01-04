@@ -16,40 +16,61 @@
 
 package org.afeka.project.server;
 
-import static org.junit.Assert.assertEquals;
-
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.testing.GrpcCleanupRule;
+import org.afeka.project.WAFModule;
+import org.afeka.project.waf.api.HTTPRequest;
 import org.afeka.project.waf.api.Ping;
 import org.afeka.project.waf.api.Pong;
 import org.afeka.project.waf.api.ServerAPIGrpc;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-@RunWith(JUnit4.class)
+import static org.junit.Assert.assertEquals;
+
 public class WAFServiceImplTest {
-    @Rule
-    public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
+  @Rule public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
 
-    @Test
-    public void wafServiceImplPingPongTest() throws Exception {
-        // Generate a unique in-process server name.
-        String serverName = InProcessServerBuilder.generateName();
+  private ServerAPIGrpc.ServerAPIBlockingStub stub;
+  private Injector injector = Guice.createInjector(new WAFModule());
 
-        // Create a server, add service, start, and register for automatic graceful shutdown.
-        grpcCleanup.register(InProcessServerBuilder
-                .forName(serverName).directExecutor().addService(new WAFServiceImpl()).build().start());
+  @Before
+  public void registerServer() throws Exception {
+    // Generate a unique in-process server name.
+    String serverName = InProcessServerBuilder.generateName();
 
-        ServerAPIGrpc.ServerAPIBlockingStub stub = ServerAPIGrpc.newBlockingStub(
-                // Create a client channel and register for automatic graceful shutdown.
-                grpcCleanup.register(InProcessChannelBuilder.forName(serverName).directExecutor().build()));
+    // Create a server, add service, start, and register for automatic graceful shutdown.
+    grpcCleanup.register(
+        InProcessServerBuilder.forName(serverName)
+            .directExecutor()
+            .addService(injector.getInstance(WAFService.class))
+            .build()
+            .start());
 
+    stub =
+        ServerAPIGrpc.newBlockingStub(
+            // Create a client channel and register for automatic graceful shutdown.
+            grpcCleanup.register(
+                InProcessChannelBuilder.forName(serverName).directExecutor().build()));
+  }
 
-        Pong pong = stub.ping(Ping.newBuilder().build());
+  @Test
+  public void testHTTPRequest() throws Exception {
+    stub.isValidRequest(
+        HTTPRequest.newBuilder()
+            .setData("GET /pub/WWW/TheProject.html HTTP/1.1\r\n" + "Host: www.w3.org\r\n\r\n")
+            .build());
+  }
 
-        assertEquals(pong, Pong.newBuilder().build());
-    }
+  @Test
+  public void pingPongTest() throws Exception {
+
+    Pong pong = stub.ping(Ping.newBuilder().build());
+
+    assertEquals(pong, Pong.newBuilder().build());
+  }
 }

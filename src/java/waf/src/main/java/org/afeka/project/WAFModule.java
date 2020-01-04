@@ -12,9 +12,9 @@ public class WAFModule extends AbstractModule {
     install(new HTTPModule());
     install(new ValidatorModule());
     install(
-            new FactoryModuleBuilder()
-                    .implement(WAFServer.class, WAFServerImpl.class)
-                    .build(WAFServerFactory.class));
+        new FactoryModuleBuilder()
+            .implement(WAFServer.class, WAFServerImpl.class)
+            .build(WAFServerFactory.class));
     bind(WAFService.class).to(WAFServiceImpl.class);
     bind(LoggerInitializer.class).to(Log4j2OverrideConfiguration.class);
   }
