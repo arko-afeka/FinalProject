@@ -15,14 +15,20 @@ public class SQLiModule implements ValidationModule {
   public AnalysisResultState analyse(HTTPMessage message) {
     final HTTPRequestLine requestData = (HTTPRequestLine) message.getHeaderLine();
 
-    return requestData
+    if (requestData
         .getQueryParams()
         .values()
         .parallelStream()
         .filter(data -> new Libinjection().libinjection_sqli(data))
         .findAny()
         .map(x -> AnalysisResultState.BLOCK)
-        .orElse(AnalysisResultState.ALLOW);
+        .orElse(AnalysisResultState.ALLOW).equals(AnalysisResultState.BLOCK)) {
+      return AnalysisResultState.BLOCK;
+    } else if (new Libinjection().libinjection_sqli(message.getBody())) {
+      return AnalysisResultState.BLOCK;
+    }
+
+    return AnalysisResultState.ALLOW;
   }
 
   @Override
