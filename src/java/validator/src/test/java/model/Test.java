@@ -12,9 +12,7 @@ public class Test {
 
   private List<ParentStage> stages;
 
-  public Test() {
-
-  }
+  public Test() {}
 
   public Test(String testTitle, String desc, List<ParentStage> stages) {
     this.testTitle = testTitle;
@@ -34,8 +32,10 @@ public class Test {
     return stages;
   }
 
-    @Override
-    public String toString() {
-      return testTitle;
-    }
+  @Override
+  public String toString() {
+    return testTitle;
+  }
+
+
 }

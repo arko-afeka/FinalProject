@@ -2,13 +2,10 @@ package org.afeka.project.util.http;
 
 import com.google.inject.AbstractModule;
 import org.afeka.project.exception.HTTPStructureException;
-import org.afeka.project.model.http.HTTPConstant;
-import org.afeka.project.model.http.HTTPHeaderLine;
-import org.afeka.project.model.http.HTTPMessage;
+import org.afeka.project.model.http.*;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
-import java.net.http.HttpRequest;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -30,8 +27,21 @@ public class HTTPMessageParserImpl extends AbstractModule implements HTTPMessage
 
       headers = new HTTPHeadersParser(reader).getHeaders();
 
-      return new HTTPMessage(
-          headerLine, headers, reader.lines().collect(Collectors.joining(HTTPConstant.CRLF)));
+      String body;
+      if (headers.containsKey("Content-Type")
+          && headers.get("Content-Type").equals("application/x-www-form-urlencoded")
+          && headerLine.getType().equals(HTTPMessageType.Request)) {
+        body = "";
+        ((HTTPRequestLine) headerLine)
+            .getQueryParams()
+            .putAll(
+                HTTPRequestLineParser.getParams(
+                    reader.lines().collect(Collectors.joining("\r\n"))));
+      } else {
+        body = reader.lines().collect(Collectors.joining(HTTPConstant.CRLF));
+      }
+
+      return new HTTPMessage(headerLine, headers, body);
     } catch (Exception ex) {
       throw new HTTPStructureException(
           String.format("Failed processing http request %s", data), ex);

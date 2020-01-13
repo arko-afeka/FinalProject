@@ -9,12 +9,9 @@ package api;
 service ServerAPI {
     rpc IsValidRequest (HTTPRequest) returns (AnalysisStatus) {
     }
-    rpc IsValidResponse (HTTPResponse) returns (AnalysisStatus) {
-    }
     rpc ping (Ping) returns (Pong) {
     }
 }
-
 message Ping {
 
 }
@@ -31,11 +28,6 @@ message HTTPRequest {
     string data = 1;
 }
 
-message HTTPResponse {
-    UUID uuid = 1;
-    string data = 2;
-}
-
 enum MessageStatus {
     Block = 0;
     Allow = 1;
@@ -43,7 +35,6 @@ enum MessageStatus {
 
 message AnalysisStatus {
     MessageStatus status = 1;
-    UUID uuid = 2;
 }
 
 

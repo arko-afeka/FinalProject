@@ -4,6 +4,7 @@ import org.afeka.project.validation.plugin.xss.model.Token;
 import org.afeka.project.validation.plugin.xss.model.ValidatorFlag;
 import org.afeka.project.validation.plugin.xss.state.*;
 import org.afeka.project.validation.plugin.xss.util.StringReader;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.Iterator;
 
@@ -11,7 +12,7 @@ public class Tokenizer implements Iterator<Token> {
   private State state;
 
   public Tokenizer(ValidatorFlag flag, String data) {
-    final StringReader dataReader = new StringReader(data);
+    final StringReader dataReader = new StringReader(StringEscapeUtils.unescapeXml(StringEscapeUtils.unescapeEcmaScript(StringEscapeUtils.unescapeHtml4(data))));
     switch (flag) {
       case DEFAULT:
         {

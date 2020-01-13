@@ -1,12 +1,17 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Lists;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import model.Stage;
 import model.TestFile;
+import org.afeka.project.ValidatorModule;
 import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.model.AnalysisResultState;
+import org.afeka.project.model.http.HTTPMessage;
 import org.afeka.project.util.http.HTTPMessageParserImpl;
-import org.afeka.project.validation.plugin.SQLiModule;
+import org.afeka.project.validation.plugin.XSSModule;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,11 +27,12 @@ import java.util.Objects;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class SQLITest {
+public class XSSTest {
   private model.Test test;
-  private SQLiModule module;
+  private Injector injector = Guice.createInjector(new ValidatorModule());
+  private XSSModule module;
 
-  public SQLITest(model.Test test) {
+  public XSSTest(model.Test test) {
     this.test = test;
   }
 
@@ -38,7 +44,7 @@ public class SQLITest {
         Objects.requireNonNull(
             new File(
                     Objects.requireNonNull(
-                            SQLITest.class.getClassLoader().getResource("sqli/injection"))
+                            XSSTest.class.getClassLoader().getResource("xss/injection"))
                         .toURI())
                 .listFiles())) {
       final TestFile testFile = objectMapper.readValue(file, TestFile.class);
@@ -53,7 +59,7 @@ public class SQLITest {
 
   @Before
   public void setUp() {
-    module = new SQLiModule();
+    module = injector.getInstance(XSSModule.class);
   }
 
   @Test
@@ -67,7 +73,7 @@ public class SQLITest {
         .append(" ")
         .append(stage.getInput().getUri())
         .append(" ")
-        .append(stage.getInput().getVersion())
+        .append(Objects.requireNonNullElse(stage.getInput().getVersion(), "HTTP/1.1"))
         .append("\r\n");
 
     stage
@@ -77,20 +83,21 @@ public class SQLITest {
 
     buffer.append("\r\n");
 
-    if (stage.getInput().getMethod().equals("POST")) {
-      buffer.append(stage.getInput().getData());
+    if (Objects.nonNull(stage.getInput().getData())) {
+      buffer.append(StringUtils.join(stage.getInput().getData(), "\r\n"));
     }
 
     AnalysisResultState result;
 
-    if (Objects.isNull(stage.getOutput().getNoLogContains())) {
-      result = AnalysisResultState.BLOCK;
-    } else if (Objects.isNull(stage.getOutput().getLogContains())) {
+    if (Objects.isNull(stage.getOutput().getLogContains())) {
       result = AnalysisResultState.ALLOW;
+    } else if (Objects.isNull(stage.getOutput().getNoLogContains())) {
+      result = AnalysisResultState.BLOCK;
     } else {
       throw new RuntimeException("Test");
     }
 
+    System.out.println(String.format("Input is: %s", buffer.toString()));
     assertEquals(result, module.analyse(new HTTPMessageParserImpl().getMessage(buffer.toString())));
   }
 }

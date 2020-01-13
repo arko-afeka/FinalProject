@@ -1,10 +1,12 @@
 package org.afeka.project.util.http;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.model.http.HTTPConstant;
 
 import java.io.BufferedReader;
+import java.net.URLDecoder;
 import java.util.Map;
 
 public class HTTPHeadersParser {
@@ -29,6 +31,13 @@ public class HTTPHeadersParser {
 
         String name = line.substring(0, sepIndex);
         String value = line.substring(sepIndex + 1).trim();
+
+        try {
+          name = URLDecoder.decode(name, Charsets.UTF_8);
+        } catch (Exception ignored) {}
+        try {
+          value = URLDecoder.decode(value, Charsets.UTF_8);
+        } catch (Exception ignored) {}
 
         if (headers.containsKey(name)) {
           throw new HTTPStructureException(String.format("Duplicate header found %s", name));

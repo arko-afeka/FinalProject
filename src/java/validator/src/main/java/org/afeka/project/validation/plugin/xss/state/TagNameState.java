@@ -53,6 +53,23 @@ public class TagNameState extends State {
         default:
           {
             if (H5Utils.isWhite(cur)) {
+              while (true) {
+                if (data.size() <= (pos + 1)) {
+                  break;
+                }
+
+                char next = data.peek(pos + 1);
+
+                if (!H5Utils.isWhite(next)
+                        && data.size() > (pos + 2)
+                        && H5Utils.isWhite(data.peek(pos + 2))
+                    || (data.size() <= (pos + 2))) {
+                  pos += 2;
+                } else {
+                  break;
+                }
+              }
+
               shouldContinue = true;
               nextState = new BeforeAttributeNameState(this);
               token = new Token(data.subString(pos - data.position()), TokenType.TAG_NAME_OPEN);

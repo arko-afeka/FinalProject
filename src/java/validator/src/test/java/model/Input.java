@@ -3,56 +3,99 @@ package model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Input {
-    @JsonProperty("dest_addr")
-    private String destAddr;
-    private Map<String, String> headers;
-    private String method;
-    private Integer port;
-    private String uri;
-    private String data;
-    private String version;
+  @JsonProperty("dest_addr")
+  private String destAddr;
 
-    public Input() {
+  private Map<String, String> headers;
+  private String method;
+  private Integer port;
+  private String uri;
+  private String version;
+  private Data data;
 
+  @JsonProperty("stop_magic")
+  private boolean stopMagic;
+
+  public Input() {}
+
+  public Input(
+      String destAddr,
+      Map<String, String> headers,
+      String method,
+      Integer port,
+      String uri,
+      String version,
+      Data data) {
+    this.destAddr = destAddr;
+    this.headers = headers;
+    this.method = method;
+    this.port = port;
+    this.uri = uri;
+    this.data = data;
+    this.version = version;
+  }
+
+  public String getDestAddr() {
+    return destAddr;
+  }
+
+  public Map<String, String> getHeaders() {
+    if (!headers.containsKey("Content-Type")) {
+      headers.put("Content-Type", "application/x-www-form-urlencoded");
     }
+    return headers;
+  }
 
-    public Input(String destAddr, Map<String, String> headers, String method, Integer port, String uri, String data, String version) {
-        this.destAddr = destAddr;
-        this.headers = headers;
-        this.method = method;
-        this.port = port;
-        this.uri = uri;
-        this.data = data;
-        this.version = version;
-    }
+  public String getMethod() {
+    return method;
+  }
 
-    public String getDestAddr() {
-        return destAddr;
-    }
+  public Integer getPort() {
+    return port;
+  }
 
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
+  public String getUri() {
+    return uri;
+  }
 
-    public String getMethod() {
-        return method;
-    }
+  public String getData() {
+    return Objects.requireNonNullElse(data, new Data("")).getData();
+  }
 
-    public Integer getPort() {
-        return port;
-    }
+  public String getVersion() {
+    return version;
+  }
 
-    public String getUri() {
-        return uri;
-    }
+  public boolean isStopMagic() {
+    return stopMagic;
+  }
 
-    public String getData() {
-        return data;
-    }
-
-    public String getVersion() {
-        return version;
-    }
+  @Override
+  public String toString() {
+    return "Input{"
+        + "destAddr='"
+        + destAddr
+        + '\''
+        + ", headers="
+        + headers
+        + ", method='"
+        + method
+        + '\''
+        + ", port="
+        + port
+        + ", uri='"
+        + uri
+        + '\''
+        + ", version='"
+        + version
+        + '\''
+        + ", data="
+        + data
+        + ", stopMagic="
+        + stopMagic
+        + '}';
+  }
 }
