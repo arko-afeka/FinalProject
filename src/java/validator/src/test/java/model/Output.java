@@ -25,4 +25,12 @@ public class Output {
     public String getNoLogContains() {
         return noLogContains;
     }
+
+    @Override
+    public String toString() {
+        return "Output{" +
+                "logContains='" + logContains + '\'' +
+                ", noLogContains='" + noLogContains + '\'' +
+                '}';
+    }
 }

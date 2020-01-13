@@ -1,5 +1,6 @@
 package org.afeka.project.validation.plugin;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import org.afeka.project.libinjection.Libinjection;
 import org.afeka.project.model.AnalysisResultState;
@@ -8,6 +9,7 @@ import org.afeka.project.model.http.HTTPMessageType;
 import org.afeka.project.model.http.HTTPRequestLine;
 import org.afeka.project.validation.ValidationModule;
 
+import java.net.URLDecoder;
 import java.util.Set;
 
 public class SQLiModule implements ValidationModule {
@@ -15,14 +17,27 @@ public class SQLiModule implements ValidationModule {
   public AnalysisResultState analyse(HTTPMessage message) {
     final HTTPRequestLine requestData = (HTTPRequestLine) message.getHeaderLine();
 
-    return requestData
+    if (requestData
         .getQueryParams()
         .values()
         .parallelStream()
-        .filter(data -> new Libinjection().libinjection_sqli(data))
+        .filter(
+            data -> {
+              try {
+                data = URLDecoder.decode(data, Charsets.UTF_8);
+              } catch (Exception ignored) {
+              }
+
+              return new Libinjection().libinjection_sqli(data);
+            })
         .findAny()
         .map(x -> AnalysisResultState.BLOCK)
-        .orElse(AnalysisResultState.ALLOW);
+        .orElse(AnalysisResultState.ALLOW)
+        .equals(AnalysisResultState.BLOCK)) {
+      return AnalysisResultState.BLOCK;
+    }
+
+    return AnalysisResultState.ALLOW;
   }
 
   @Override

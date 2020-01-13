@@ -7,6 +7,4 @@ import java.util.UUID;
 
 public interface ValidatorManager {
   AnalysisResult validateRequest(HTTPMessage message);
-
-  AnalysisResult validateResponse(HTTPMessage message, UUID uuid);
 }

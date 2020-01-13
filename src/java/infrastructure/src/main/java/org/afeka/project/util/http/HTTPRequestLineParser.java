@@ -26,9 +26,9 @@ public class HTTPRequestLineParser extends HTTPHeaderLineParser {
             .collect(Collectors.toList());
   }
 
-  Map<String, String> getParams(String paramsStr) {
+  public static Map<String, String> getParams(String paramsStr) {
     if (paramsStr.endsWith("#")) {
-      paramsStr = paramsStr.substring(0, paramsStr.length() - 2);
+      paramsStr = paramsStr.substring(0, paramsStr.length() - 1);
     }
 
     String[] paramsData = paramsStr.split("&");
@@ -42,13 +42,21 @@ public class HTTPRequestLineParser extends HTTPHeaderLineParser {
               String value = null;
 
               if (equaliLoc != -1 && equaliLoc != (param.length() - 1)) {
-                value = URLDecoder.decode(param.substring(equaliLoc + 1), Charsets.UTF_8);
+                value = param.substring(equaliLoc + 1);
               } else {
                 equaliLoc = param.length();
                 value = param.substring(0, equaliLoc);
               }
 
-              values.put(param.substring(0, equaliLoc), value);
+              String name = param.substring(0, equaliLoc);
+              try {
+                name = URLDecoder.decode(name, Charsets.UTF_8);
+              } catch (Exception ignored) {}
+              try {
+                value = URLDecoder.decode(value, Charsets.UTF_8);
+              } catch (Exception ignored) {}
+
+              values.put( name, value);
             });
 
     return values;

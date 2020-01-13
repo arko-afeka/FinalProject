@@ -27,10 +27,6 @@ public class AnalysisStatusConverter {
   public AnalysisStatus getResult() {
     return AnalysisStatus.newBuilder()
         .setStatus(getMessageStatus())
-        .setUuid(
-            UUID.newBuilder()
-                .setData(ByteString.copyFrom(result.getUuid().toString().getBytes()))
-                .build())
         .build();
   }
 }

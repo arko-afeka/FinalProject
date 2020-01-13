@@ -9,5 +9,5 @@ dependencies {
     testCompile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.1'
     compile project(':infrastructure')
     compile project(':libinjection')
-    compile 'com.github.jsqlparser:jsqlparser:3.1'
+    compile 'org.apache.commons:commons-text:1.8'
 }

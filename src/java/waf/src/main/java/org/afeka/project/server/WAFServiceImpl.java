@@ -30,27 +30,7 @@ public class WAFServiceImpl extends WAFService {
     } catch (Exception ex) {
       log.error("Couldn't process the message blocking", ex);
       responseObserver.onNext(
-          new AnalysisStatusConverter(new AnalysisResult(AnalysisResultState.BLOCK, null))
-              .getResult());
-    }
-
-    responseObserver.onCompleted();
-  }
-
-  @Override
-  public void isValidResponse(
-      HTTPResponse httpResponse, StreamObserver<AnalysisStatus> responseObserver) {
-    try {
-      responseObserver.onNext(
-          new AnalysisStatusConverter(
-                  validatorManager.validateResponse(
-                      parser.getMessage(httpResponse.getData()),
-                      UUID.nameUUIDFromBytes(httpResponse.getUuid().getData().toByteArray())))
-              .getResult());
-    } catch (Exception ex) {
-      log.error("Couldn't process the message blocking", ex);
-      responseObserver.onNext(
-          new AnalysisStatusConverter(new AnalysisResult(AnalysisResultState.BLOCK, null))
+          new AnalysisStatusConverter(new AnalysisResult(AnalysisResultState.BLOCK))
               .getResult());
     }
 
