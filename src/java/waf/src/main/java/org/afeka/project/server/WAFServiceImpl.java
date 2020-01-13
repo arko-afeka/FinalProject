@@ -20,11 +20,6 @@ public class WAFServiceImpl extends WAFService {
   @Inject ValidatorManager validatorManager;
 
   @Override
-  public void initialize(InitializeMessage request, StreamObserver<Pong> responseObserver) {
-    super.initialize(request, responseObserver);
-  }
-
-  @Override
   public void isValidRequest(
       HTTPRequest httpRequest, StreamObserver<AnalysisStatus> responseObserver) {
     try {

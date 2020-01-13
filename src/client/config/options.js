@@ -1,7 +1,9 @@
 const reverseProxyOptions = require('../lib/reverseProxy/reverseProxyOptions');
 
 module.exports = reverseProxyOptions.create({
-    targetHost: 'www.google.com',
-    port: 80,
+    targetHost: {
+        host: 'localhost',
+        port: 8080
+    },
     log: true
 });

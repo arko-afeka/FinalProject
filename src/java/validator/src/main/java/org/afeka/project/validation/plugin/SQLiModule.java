@@ -22,7 +22,14 @@ public class SQLiModule implements ValidationModule {
         .values()
         .parallelStream()
         .filter(
-            data -> new Libinjection().libinjection_sqli(URLDecoder.decode(data, Charsets.UTF_8)))
+            data -> {
+              try {
+                data = URLDecoder.decode(data, Charsets.UTF_8);
+              } catch (Exception ignored) {
+              }
+
+              return new Libinjection().libinjection_sqli(data);
+            })
         .findAny()
         .map(x -> AnalysisResultState.BLOCK)
         .orElse(AnalysisResultState.ALLOW)

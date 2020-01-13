@@ -6,6 +6,7 @@
 const http = require("http"),
     middlewareHandler = require("../middlewareHandler"),
     reverseProxyErrors = require('./reverseProxyErrors'),
+    grpcClient = require('../grpcClient'),
     log = require('../log');
 
 class ReverseProxy {
@@ -13,15 +14,15 @@ class ReverseProxy {
      * Initialize a new `ReverseProxy`.
      *
      * @param {object} [options] Proxy's options
-     * @param {string} [options.targetHost] The target host to proxy
-     * @param {number} [options.port] The target port
+     * @param {object} [options.targetHost] Target host to proxy
+     * @param {string} [options.targetHost.host] Target host address
+     * @param {number} [options.targetHost.port] Target port
      * @param {boolean} [options.log] enable logger
      * @api public
      */
 
     constructor(options) {
         this.global = options;
-        this.targetHost = options.targetHost;
 
         this.requestHandler = middlewareHandler();
 
@@ -31,19 +32,28 @@ class ReverseProxy {
             next();
         });
 
+        // Add grpcClient to req
+        this.use('request', (req, res, next) => {
+            req.grpcClient = grpcClient;
+            next();
+        });
+
+        this.use('request', require('../middlewares/prepareRawRequest'));
+
+
         if (this.global.log) {
             this.use('request', log.logIncommingRequest);
         }
 
         this.server = http.createServer();
 
-        this.server.on("request", this.requestHandler);
+        this.server.on('request', this.requestHandler);
 
-        this.server.on("request", (req, res) => {
-            res.writeHead(200);
-            res.write("hello world!");
-            res.end();
-        });
+        // this.server.on("request", (req, res) => {
+        //     res.writeHead(200);
+        //     res.write("hello world!");
+        //     res.end();
+        // });
     }
 
     /**
