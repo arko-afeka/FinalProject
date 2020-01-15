@@ -1,13 +1,15 @@
 package org.afeka.project.util.http;
 
+import com.google.common.collect.Maps;
 import com.google.inject.AbstractModule;
 import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.model.http.*;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
-import java.net.http.HttpRequest;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class HTTPMessageParserImpl extends AbstractModule implements HTTPMessageParser {
@@ -15,18 +17,25 @@ public class HTTPMessageParserImpl extends AbstractModule implements HTTPMessage
 
   public HTTPMessage getMessage(String data) throws HTTPStructureException {
     try (BufferedReader reader = new BufferedReader(new StringReader(data))) {
-      HTTPHeaderLine headerLine;
+      HTTPRequestLine headerLine;
       Map<String, String> headers;
 
-      if (data.startsWith(HTTPConstant.HTTP_VERSION_PREFIX + HTTPConstant.HTTP_VERSION_SEPRATOR)) {
-        headerLine = new HTTPResponseLineParser(reader.readLine()).parse();
-      } else if (!data.startsWith(HTTPConstant.SEPERATOR)) {
-        headerLine = new HTTPRequestLineParser(reader.readLine()).parse();
-      } else {
-        throw new HTTPStructureException(String.format("Starts with whitespace %s", data));
-      }
+      headerLine = new HTTPRequestLineParser(reader.readLine()).parse();
 
       headers = new HTTPHeadersParser(reader).getHeaders();
+
+      String cookieHeader = headers.get(HTTPHeader.COOKIE.getName());
+
+      Map<String, String> cookies = Maps.newHashMap();
+
+      if (Objects.nonNull(cookieHeader)) {
+        cookies.putAll(
+            Arrays.stream(";".split(cookieHeader))
+                .map(String::trim)
+                .filter(cookie -> cookie.contains("="))
+                .map("="::split)
+                .collect(Collectors.toMap(cookie -> cookie[0], cookie -> cookie[1])));
+      }
 
       String body;
       if (headers.containsKey("Content-Type")
@@ -42,7 +51,7 @@ public class HTTPMessageParserImpl extends AbstractModule implements HTTPMessage
         body = reader.lines().collect(Collectors.joining(HTTPConstant.CRLF));
       }
 
-      return new HTTPMessage(headerLine, headers, body);
+      return new HTTPMessage(headerLine, headers, cookies, body);
     } catch (Exception ex) {
       throw new HTTPStructureException(
           String.format("Failed processing http request %s", data), ex);

@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'final-java'
-include 'waf', 'validator', 'infrastructure', 'libinjection'
+include 'waf', 'validator', 'infrastructure'

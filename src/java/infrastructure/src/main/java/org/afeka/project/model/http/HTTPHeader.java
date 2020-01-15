@@ -6,7 +6,8 @@ import java.util.Optional;
 public enum HTTPHeader {
   USER_AGENT("user-agent"),
   HOST("host"),
-  ;
+  REFERER("referer"),
+  COOKIE("cookie");
   private String name;
 
   HTTPHeader(String name) {

@@ -3,18 +3,19 @@ package org.afeka.project.model.http;
 import java.util.Map;
 
 public class HTTPMessage {
-  private HTTPHeaderLine firstLine;
+  private HTTPRequestLine firstLine;
 
   private Map<String, String> headers;
+  private Map<String, String> cookies;
   private String body;
 
-  public HTTPMessage(HTTPHeaderLine firstLine, Map<String, String> headers, String body) {
+  public HTTPMessage(HTTPRequestLine firstLine, Map<String, String> headers, Map<String, String> cookies, String body) {
     this.firstLine = firstLine;
     this.headers = headers;
     this.body = body;
   }
 
-  public HTTPHeaderLine getHeaderLine() {
+  public HTTPRequestLine getHeaderLine() {
     return firstLine;
   }
 
@@ -28,6 +29,10 @@ public class HTTPMessage {
 
   public String getBody() {
     return body;
+  }
+
+  public Map<String, String> getCookies() {
+    return cookies;
   }
 
   @Override

@@ -23,8 +23,6 @@ public class ValidatorManagerImpl implements ValidatorManager {
     AnalysisResultState result =
         validations
             .parallelStream()
-            .filter(
-                validationModule -> validationModule.messsageTypes().contains(message.getType()))
             .map(validationModule -> validationModule.analyse(message))
             .filter(AnalysisResultState.BLOCK::equals)
             .findFirst()

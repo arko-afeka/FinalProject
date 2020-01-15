@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.google.common.collect.Lists;
-import model.Data;
+import model.owasp.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;

@@ -1,16 +1,13 @@
 package org.afeka.project.validation.plugin;
 
 import com.google.common.base.Charsets;
-import com.google.common.collect.ImmutableSet;
-import org.afeka.project.libinjection.Libinjection;
+import org.afeka.project.validation.plugin.sqli.libinjection.Libinjection;
 import org.afeka.project.model.AnalysisResultState;
 import org.afeka.project.model.http.HTTPMessage;
-import org.afeka.project.model.http.HTTPMessageType;
 import org.afeka.project.model.http.HTTPRequestLine;
 import org.afeka.project.validation.ValidationModule;
 
 import java.net.URLDecoder;
-import java.util.Set;
 
 public class SQLiModule implements ValidationModule {
   @Override
@@ -40,13 +37,4 @@ public class SQLiModule implements ValidationModule {
     return AnalysisResultState.ALLOW;
   }
 
-  @Override
-  public AnalysisResultState analyseWithContext(HTTPMessage message, HTTPMessage fromStorage) {
-    return AnalysisResultState.ALLOW;
-  }
-
-  @Override
-  public Set<HTTPMessageType> messsageTypes() {
-    return ImmutableSet.of(HTTPMessageType.Request);
-  }
 }

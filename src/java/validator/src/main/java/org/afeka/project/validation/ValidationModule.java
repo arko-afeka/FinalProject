@@ -9,7 +9,4 @@ import java.util.Set;
 public interface ValidationModule {
   AnalysisResultState analyse(HTTPMessage message);
 
-  AnalysisResultState analyseWithContext(HTTPMessage message, HTTPMessage fromStorage);
-
-  Set<HTTPMessageType> messsageTypes();
 }

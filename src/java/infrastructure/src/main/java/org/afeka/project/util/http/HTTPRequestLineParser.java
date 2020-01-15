@@ -63,7 +63,7 @@ public class HTTPRequestLineParser extends HTTPHeaderLineParser {
   }
 
   @Override
-  public HTTPHeaderLine parse() throws HTTPStructureException {
+  public HTTPRequestLine parse() throws HTTPStructureException {
     try {
       if (lineParts.size() != 3) {
         throw new HTTPStructureException(

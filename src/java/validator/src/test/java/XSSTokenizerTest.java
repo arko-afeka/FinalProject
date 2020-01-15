@@ -68,7 +68,7 @@ public class XSSTokenizerTest {
     this.tokenizer = new Tokenizer(ValidatorFlag.DEFAULT, input);
   }
 
-  @Parameterized.Parameters(name = "test file {index} = {0}")
+  @Parameterized.Parameters(name = "{0}")
   public static List<Object[]> getFiles() throws URISyntaxException {
     return Arrays.stream(
             Objects.requireNonNull(

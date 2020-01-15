@@ -3,11 +3,12 @@ package org.afeka.project.util.http;
 import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.model.http.HTTPConstant;
 import org.afeka.project.model.http.HTTPHeaderLine;
+import org.afeka.project.model.http.HTTPRequestLine;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class HTTPHeaderLineParser {
-  public abstract HTTPHeaderLine parse() throws HTTPStructureException;
+  public abstract HTTPRequestLine parse() throws HTTPStructureException;
 
   protected void validateVersion(String versionPart) throws HTTPStructureException {
     if (versionPart.length() != HTTPConstant.HTTP_VERSION_LENGTH) {

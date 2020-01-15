@@ -1,8 +1,8 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Lists;
-import model.Stage;
-import model.TestFile;
+import model.owasp.Stage;
+import model.owasp.TestFile;
 import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.model.AnalysisResultState;
 import org.afeka.project.util.http.HTTPMessageParserImpl;
@@ -23,16 +23,16 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class SQLITest {
-  private model.Test test;
+  private model.owasp.Test test;
   private SQLiModule module;
 
-  public SQLITest(model.Test test) {
+  public SQLITest(model.owasp.Test test) {
     this.test = test;
   }
 
-  @Parameterized.Parameters(name = "http {index}: {0}")
-  public static Collection<model.Test> parameters() throws URISyntaxException, IOException {
-    Collection<model.Test> tests = Lists.newArrayList();
+  @Parameterized.Parameters(name = "{0}")
+  public static Collection<model.owasp.Test> parameters() throws URISyntaxException, IOException {
+    Collection<model.owasp.Test> tests = Lists.newArrayList();
     final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
     for (File file :
         Objects.requireNonNull(
@@ -91,6 +91,7 @@ public class SQLITest {
       throw new RuntimeException("Test");
     }
 
+    System.out.println(buffer.toString());
     assertEquals(result, module.analyse(new HTTPMessageParserImpl().getMessage(buffer.toString())));
   }
 }

@@ -3,12 +3,11 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Lists;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import model.Stage;
-import model.TestFile;
+import model.owasp.Stage;
+import model.owasp.TestFile;
 import org.afeka.project.ValidatorModule;
 import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.model.AnalysisResultState;
-import org.afeka.project.model.http.HTTPMessage;
 import org.afeka.project.util.http.HTTPMessageParserImpl;
 import org.afeka.project.validation.plugin.XSSModule;
 import org.apache.commons.lang3.StringUtils;
@@ -28,17 +27,17 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class XSSTest {
-  private model.Test test;
+  private model.owasp.Test test;
   private Injector injector = Guice.createInjector(new ValidatorModule());
   private XSSModule module;
 
-  public XSSTest(model.Test test) {
+  public XSSTest(model.owasp.Test test) {
     this.test = test;
   }
 
-  @Parameterized.Parameters(name = "http {index}: {0}")
-  public static Collection<model.Test> parameters() throws URISyntaxException, IOException {
-    Collection<model.Test> tests = Lists.newArrayList();
+  @Parameterized.Parameters(name = "{0}")
+  public static Collection<model.owasp.Test> parameters() throws URISyntaxException, IOException {
+    Collection<model.owasp.Test> tests = Lists.newArrayList();
     final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
     for (File file :
         Objects.requireNonNull(
