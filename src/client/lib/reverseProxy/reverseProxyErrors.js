@@ -1,5 +1,11 @@
-exports.middlewareIsNotAFunctionError = class MiddlewareIsNotAFunctionError extends Error {
+exports.MiddlewareIsNotAFunctionError = class MiddlewareIsNotAFunctionError extends Error {
     constructor() {
-        super('ReverseProxy.prototype.use paramater must be a function or an array of functions');
+        super('Middleware must be a function');
     }
-};
+}
+
+exports.TargetHostIsRequired = class TargetHostIsRequired extends Error {
+    constructor() {
+        super('Target host must be past to reverseProxyOptions');
+    }
+}

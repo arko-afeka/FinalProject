@@ -1,10 +1,6 @@
-const reverseProxy = require('./lib/reverseProxy'),
-    options = require('./config/options');
+var reverseProxy = require('./lib/reverseProxy');
+var reverseProxyOptions = require('./config').reverseProxyOptions;
 
-var app = new reverseProxy(options);
+var proxy = new reverseProxy(reverseProxyOptions);
 
-app.use('request', require('./lib/middlewares/prepareProxyRequest'));
-
-app.listen(8081, () => {
-    console.log(`Server started!`)
-});
+proxy.listen();

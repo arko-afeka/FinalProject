@@ -1,33 +1,31 @@
-const http = require('http');
+/**
+ * Module dependencies.
+ * @private
+ */
 
+var http = require('http');
 class ProxyRequest extends http.ClientRequest {
 
-    constructor(req, res) {
+    /**
+     * 
+     * @param {object} options
+     * @public
+     */
 
-        /**
-         * Initialize a new `ProxyRequest`.
-         *
-         * @param {http.IncommingMessage} [req]
-         * @param {http.ServerResponse} [res]
-         * @api public
-         */
+    constructor(options) {
+        super(options);
 
-        super({
-            host: req.global.targetHost.host,
-            port: req.global.targetHost.port,
-            path: req.url,
-            method: req.method,
-            headers: req.headers
-        });
+        this.clientRequest = options.request;
 
         this.on('response', (response) => {
-            res.writeHead(response.statusCode, response.headers);
-            response.pipe(res);
-            response.on('end', () => {
-                res.end();
-            });
+            this.clientRequest.emit('serverResponse', response);
         });
     }
 }
+
+/**
+ * Module exports.
+ * @public
+ */
 
 module.exports = ProxyRequest;

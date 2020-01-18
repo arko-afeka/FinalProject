@@ -1,14 +1,29 @@
-const grpc = require('grpc'),
-    protoLoader = require('@grpc/proto-loader'),
-    config = require('../../config/config');
+/**
+ * Module dependencies.
+ * @private
+ */
 
-const PROTO_PATH = __dirname + '/api.proto';
-const {
+var grpc = require('grpc');
+var protoLoader = require('@grpc/proto-loader');
+var config = require('../../config');
+
+/**
+ * Module varibles.
+ * @private
+ */
+
+var PROTO_PATH = __dirname + '/api.proto';
+var {
     host,
     port
-} = config.wafServer;
+} = config.waf;
+var packageDefinition = protoLoader.loadSync(PROTO_PATH);
+var packageObject = grpc.loadPackageDefinition(packageDefinition);
 
-const packageDefinition = protoLoader.loadSync(PROTO_PATH);
-const packageObject = grpc.loadPackageDefinition(packageDefinition);
+/**
+ * Module exports.
+ * @public
+ * @returns {object}
+ */
 
 module.exports = new packageObject.api.ServerAPI(`${host}:${port}`, grpc.credentials.createInsecure());

@@ -3,101 +3,103 @@
  * @private
  */
 
-const http = require("http"),
-    middlewareHandler = require("../middlewareHandler"),
-    reverseProxyErrors = require('./reverseProxyErrors'),
-    grpcClient = require('../grpcClient'),
-    log = require('../log');
+var http = require("http");
+var ProxyIncoming = require("../proxyIncoming");
+var ProxyResponse = require("../proxyResponse");
+var middlewaresHandler = require("../middlewaresHandler");
+var reverseProxyErrors = require('./reverseProxyErrors');
+var requestAnalyzer = require('../requestAnalizer');
 
-class ReverseProxy {
+class ReverseProxy extends http.Server {
+
     /**
-     * Initialize a new `ReverseProxy`.
-     *
-     * @param {object} [options] Proxy's options
-     * @param {object} [options.targetHost] Target host to proxy
-     * @param {string} [options.targetHost.host] Target host address
-     * @param {number} [options.targetHost.port] Target port
-     * @param {boolean} [options.log] enable logger
-     * @api public
+     * @param {object} options 
+     * @param {object} options.targrtHost target host to proxy properties
+     * @param {String} options.targrtHost.host  target host ip address
+     * @param {Number} options.targrtHost.port target host port number
+     * @param {String} options.targrtHost.protocol 'http:' | 'https:'
+     * @param {String} host proxy host ip address
+     * @param {String} port proxy port number
+     * @param {Boolean} blocking true | false to run on blocking | not-blocking modez
+     * @constructor
+     * @public
      */
-
     constructor(options) {
+        const handler = middlewaresHandler();
+
+        super({
+                IncomingMessage: ProxyIncoming,
+                ServerResponse: ProxyResponse
+            },
+            handler
+        );
+
         this.global = options;
+        this.handler = handler;
+        this.requestAnalyzer = requestAnalyzer;
 
-        this.requestHandler = middlewareHandler();
-
-        // Use this.global object to the request object middleware.
-        this.use('request', (req, res, next) => {
+        this.use((req, res, next) => {
             req.global = this.global;
+            res.global = this.global;
             next();
         });
 
-        // Add grpcClient to req
-        this.use('request', (req, res, next) => {
-            req.grpcClient = grpcClient;
+        this.use((req, res, next) => {
+            if (this.global.blocking) {
+                req.requestAnalyzer = this.requestAnalyzer;
+            }
             next();
         });
-
-        this.use('request', require('../middlewares/prepareRawRequest'));
-
-
-        if (this.global.log) {
-            this.use('request', log.logIncommingRequest);
-        }
-
-        this.server = http.createServer();
-
-        this.server.on('request', this.requestHandler);
-
-        // this.server.on("request", (req, res) => {
-        //     res.writeHead(200);
-        //     res.write("hello world!");
-        //     res.end();
-        // });
     }
 
     /**
-     * Append a middleware to an event emitted on this.server.
-     * For example:
-     * ReverseProxy.prototype.use('request', (req, res) => { console.log(`A new ${req.method} request`); });
-     * will print to the console that a new 'request' event is emitted.
-     *
-     * @param {string} event A http.Server event
-     * @param {function} fn Middleware function to bind to listener
+     * Add a middleware function to the handler's middlewares stack,
+     * to be used when the handler is called.
+     * An array of functions can also be passed, they will be added
+     * to the stack one by one.
+     * 
+     * @param {Function} fn 
      * @public
      */
 
-    use(event, fn) {
-        var handler = {
-            request: this.requestHandler
-        } [event];
-
-        // A single middleware function.
+    use(fn) {
         if (typeof fn === "function") {
-            handler.use(fn);
+            this.handler.use(fn);
             return;
         }
-        // An array of middleware functions
+
+        // An array of middleware functions.
         if (Array.isArray(fn)) {
             fn.forEach(fn => {
-                handler.use(fn);
+                this.handler.use(fn);
                 return;
             });
         }
-        // Otherwise throw an error
-        throw new reverseProxyErrors.middlewareIsNotAFunctionError();
+
+        throw new reverseProxyErrors.MiddlewareIsNotAFunctionError();
     }
 
     /**
-     * Shorthand for this.server.listen(...)
-     *
-     * @param {Mixed} ...
-     * @return {Server}
-     * @api public
+     * Request analysis.
+     * @param {String} data raw http request
+     * @param {Function} cb callback function that take analysisStatus proto as param
      */
 
-    listen(...args) {
-        return this.server.listen(...args);
+    analyzeRequest(data, cb) {
+        this.requestAnalyzer(data, cb);
+    }
+
+    /**
+     * Init server listening for connections.
+     * 
+     * @override
+     * @public
+     */
+
+    listen() {
+        super.listen(this.global.port, this.global.host, () => {
+            console.log(`proxy server started on ${this.global.host}:${this.global.port}`);
+        });
     }
 }
 
