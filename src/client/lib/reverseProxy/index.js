@@ -8,7 +8,7 @@ var ProxyIncoming = require("../proxyIncoming");
 var ProxyResponse = require("../proxyResponse");
 var middlewaresHandler = require("../middlewaresHandler");
 var reverseProxyErrors = require('./reverseProxyErrors');
-var requestAnalyzer = require('../requestAnalizer');
+var requestAnalyzer = require('../requestAnalyzer');
 
 class ReverseProxy extends http.Server {
 
