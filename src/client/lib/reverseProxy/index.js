@@ -44,12 +44,12 @@ class ReverseProxy extends http.Server {
             next();
         });
 
-        this.use((req, res, next) => {
-            if (this.global.blocking) {
+        if (this.global.blocking) {
+            this.use((req, res, next) => {
                 req.requestAnalyzer = this.requestAnalyzer;
-            }
-            next();
-        });
+                next();
+            });
+        }
     }
 
     /**
@@ -96,10 +96,11 @@ class ReverseProxy extends http.Server {
      * @public
      */
 
-    listen() {
-        super.listen(this.global.port, this.global.host, () => {
+    listen(cb) {
+        cb = cb ? cb : () => {
             console.log(`proxy server started on ${this.global.host}:${this.global.port}`);
-        });
+        }
+        super.listen(this.global.port, this.global.host, cb);
     }
 }
 

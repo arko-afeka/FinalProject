@@ -5,7 +5,6 @@
 
 var http = require("http");
 var ProxyIncomingRaw = require("./proxyIncomingRaw");
-var grpcClient = require("../grpcClient");
 var ProxyRequest = require("../proxyRequest");
 var proxyRequestOptions = require("../proxyRequest/proxyRequestOptions");
 
@@ -48,22 +47,19 @@ class ProxyIncoming extends http.IncomingMessage {
    */
 
   onEnd() {
-    // Running on Blocking mode
-    if (this.global.blocking) {
-      var rawRequest = new ProxyIncomingRaw(this);
-      rawRequest.appendToBody(this.body);
-
-      this.requestAnalyzer(rawRequest.getRaw(), (analysis) => {
-        this.onAnalized(analysis);
-      });
-    } else {
+    // Running on not-blocking mode
+    if (!this.global.blocking) {
       this.onAnalized({
         status: ANALYSIS_STATUS.allow
       });
     }
 
+    var rawRequest = new ProxyIncomingRaw(this);
+    rawRequest.appendToBody(this.body);
 
-    //this.analysis(rawRequest.getRaw());
+    this.requestAnalyzer(rawRequest.getRaw(), (analysis) => {
+      this.onAnalized(analysis);
+    });
   }
 
   /**
@@ -93,43 +89,6 @@ class ProxyIncoming extends http.IncomingMessage {
       this.body += data.toString();
     }
     this.hasBody = true;
-  }
-
-  /**
-   * Creates a promise for handling grpc connection to the WAF's server
-   * @param {String} data 
-   */
-
-  isValidRequestPromise(data) {
-    return new Promise((resolve, reject) => {
-      var wafClient = grpcClient;
-
-      wafClient.isValidRequest({
-          data: data
-        },
-        (err, response) => {
-          err ? reject(err) : resolve(response);
-        }
-      );
-    });
-  }
-
-  /**
-   * Request analisys
-   * @param {String} data raw request to analize.
-   * @private
-   */
-
-  analysis(data) {
-    let wafResponse = this.isValidRequestPromise;
-
-    wafResponse(data)
-      .then(analysis => {
-        this.emit("analized", analysis);
-      })
-      .catch(err => {
-        throw new ProxyIncomingError.AnalysisStatusResponseError;
-      });
   }
 
   /**
