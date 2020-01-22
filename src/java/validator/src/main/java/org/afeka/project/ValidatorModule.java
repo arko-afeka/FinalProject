@@ -3,12 +3,15 @@ package org.afeka.project;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
+import com.google.inject.name.Names;
 import org.afeka.project.validation.ValidationModule;
+import org.afeka.project.validation.ValidationModuleConfiguration;
 import org.afeka.project.validation.ValidatorManager;
 import org.afeka.project.validation.ValidatorManagerImpl;
 import org.afeka.project.validation.plugin.CSRFModule;
 import org.afeka.project.validation.plugin.SQLiModule;
 import org.afeka.project.validation.plugin.XSSModule;
+import org.afeka.project.validation.plugin.csrf.CSRFConfiguration;
 import org.afeka.project.validation.plugin.xss.MessageTokenizer;
 import org.afeka.project.validation.plugin.xss.util.BodyTokenizer;
 import org.afeka.project.validation.plugin.xss.util.HeaderTokenizer;
@@ -31,5 +34,7 @@ public class ValidatorModule extends AbstractModule {
     validationModuleMultibinder.addBinding().to(XSSModule.class);
     validationModuleMultibinder.addBinding().to(SQLiModule.class);
     validationModuleMultibinder.addBinding().to(CSRFModule.class);
+
+    bind(ValidationModuleConfiguration.class).annotatedWith(Names.named("csrf")).to(CSRFConfiguration.class);
   }
 }

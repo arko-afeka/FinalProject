@@ -29,7 +29,7 @@ public class CSRFModule implements ValidationModule {
   @Inject
   public CSRFModule(@Named("csrf") ValidationModuleConfiguration configuration) {
     protectedURI = configuration.getValue("protected");
-    tokenType = configuration.getValue("token.type");
+    tokenType = AntiCSRFTokenType.valueOf(configuration.getValue("token.type"));
     tokenName = configuration.getValue("token.name");
     domain = configuration.getValue("domain");
   }

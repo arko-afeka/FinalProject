@@ -1,0 +1,6 @@
+{
+  "protected": ["secret", "topsecret", "randomdatasecret"],
+  "token.type": "PARAM",
+  "token.name": "anticsrf",
+  "domain": "www.example.com"
+}
