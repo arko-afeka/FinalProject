@@ -9,7 +9,7 @@ import org.afeka.project.server.*;
 public class WAFModule extends AbstractModule {
   @Override
   protected void configure() {
-    install(new HTTPModule());
+    install(new InfrastructureModule());
     install(new ValidatorModule());
     install(
         new FactoryModuleBuilder()

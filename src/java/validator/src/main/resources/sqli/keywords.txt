@@ -9350,4 +9350,5 @@
  {"token": "|=", "type": "o"},
  {"token": "||", "type": "&"},
  {"token": "~*", "type": "o"},
- {"token": ";", "type": ";"}]
+ {"token": ";", "type": ";"},
+ {"token": ",", "type": ","}]
