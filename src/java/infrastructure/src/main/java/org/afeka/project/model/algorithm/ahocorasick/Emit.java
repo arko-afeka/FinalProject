@@ -32,4 +32,12 @@ public class Emit<V> {
     public int hashCode() {
         return Objects.hash(value, type);
     }
+
+    @Override
+    public String toString() {
+        return "Emit{" +
+                "value='" + value + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

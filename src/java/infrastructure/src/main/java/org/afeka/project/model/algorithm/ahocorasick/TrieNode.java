@@ -8,11 +8,11 @@ import java.util.*;
 public class TrieNode<V> {
   private Map<Character, TrieNode<V>> childNodes;
   private TrieNode<V> failureNode;
-  private Set<Emit<V>> emits;
+  private TrieNode<V> outputNode;
+  private Emit<V> emit;
 
   public TrieNode() {
     this.childNodes = Maps.newHashMap();
-    this.emits = Sets.newHashSet();
   }
 
   public Map<Character, TrieNode<V>> getChildNodes() {
@@ -27,20 +27,28 @@ public class TrieNode<V> {
     return failureNode;
   }
 
-  public Set<Emit<V>> getEmits() {
-    return emits;
+  public Optional<Emit<V>> getEmit() {
+    return Optional.ofNullable(emit);
   }
 
-  public void addEmit(Emit<V> emit) {
-    this.emits.add(emit);
-  }
-
-  public void addEmits(Collection<Emit<V>> emits) {
-    this.emits.addAll(emits);
+  public void setEmit(Emit<V> emit) {
+    this.emit = emit;
   }
 
   public void setFailureNode(TrieNode<V> failureNode) {
     this.failureNode = failureNode;
+  }
+
+  public Optional<TrieNode<V>> getOutputNode() {
+    return Optional.ofNullable(outputNode);
+  }
+
+  public void addState(char transition, TrieNode<V> node) {
+    this.childNodes.put(transition, node);
+  }
+
+  public void setOutputNode(TrieNode<V> outputNode) {
+    this.outputNode = outputNode;
   }
 
   @Override
@@ -50,11 +58,6 @@ public class TrieNode<V> {
     TrieNode<?> trieNode = (TrieNode<?>) o;
     return childNodes.equals(trieNode.childNodes)
         && failureNode.equals(trieNode.failureNode)
-        && emits.equals(trieNode.emits);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(childNodes, failureNode, emits);
+        && emit.equals(trieNode.emit);
   }
 }

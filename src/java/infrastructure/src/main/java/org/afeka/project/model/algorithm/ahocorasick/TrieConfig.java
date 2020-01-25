@@ -4,23 +4,21 @@ import java.util.Optional;
 
 public class TrieConfig<V> {
   private boolean isIgnoreCase;
+  private boolean ignoreWhiteSpace;
   private V defaultType;
 
-  public TrieConfig(boolean isIgnoreCase, V defaultType) {
+  public TrieConfig(boolean isIgnoreCase, boolean ignoreWhiteSpace, V defaultType) {
     this.isIgnoreCase = isIgnoreCase;
     this.defaultType = defaultType;
-  }
-
-  public TrieConfig(boolean isIgnoreCase) {
-    this(isIgnoreCase, null);
-  }
-
-  public TrieConfig(V defaultType) {
-    this(false, defaultType);
+    this.ignoreWhiteSpace = ignoreWhiteSpace;
   }
 
   public TrieConfig() {
-    this(false, null);
+    this(false, false, null);
+  }
+
+  public boolean isIgnoreWhiteSpace() {
+    return ignoreWhiteSpace;
   }
 
   public boolean isIgnoreCase() {

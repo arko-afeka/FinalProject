@@ -16,6 +16,6 @@ public class TokenToTokenType {
   }
 
   public TokenType convert(char type) {
-      return mapping.getOrDefault(type, TokenType.TYPE_NONE);
+      return mapping.get(type);
   }
 }

@@ -4,7 +4,6 @@ package org.afeka.project.validation.plugin.sqli.libinjection.model;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TokenType {
-    TYPE_NONE((char)0),
     TYPE_KEYWORD('k'),
     TYPE_UNION('U'),
     TYPE_GROUP('B'),
@@ -42,5 +41,10 @@ public enum TokenType {
     @JsonValue
     public char getTypeName() {
         return typeName;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(typeName);
     }
 }
