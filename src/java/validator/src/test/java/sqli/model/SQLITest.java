@@ -1,4 +1,4 @@
-package model.libinjection;
+package sqli.model;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -29,7 +29,7 @@ public class SQLITest {
 
     @Override
     public String toString() {
-        return "SQLITest{" +
+        return "sqli.SQLITest{" +
                 "name='" + name + '\'' +
                 '}';
     }

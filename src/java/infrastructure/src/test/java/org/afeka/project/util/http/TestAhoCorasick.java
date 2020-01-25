@@ -21,7 +21,7 @@ public class TestAhoCorasick {
                 "he", "she", "his", "hers"
         );
 
-        Builder<String> builder = new Builder<>(new TrieConfig<>(true, true, "default"));
+        Builder<String> builder = new Builder<>(new TrieConfig<>(true, "default"));
         keywords.forEach(key -> builder.addKeyword(key, key));
 
         var trie = builder.build();

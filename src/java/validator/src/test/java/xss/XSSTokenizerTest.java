@@ -1,3 +1,5 @@
+package xss;
+
 import com.google.common.collect.Lists;
 import org.afeka.project.exception.HTTPStructureException;
 import org.afeka.project.validation.plugin.xss.Tokenizer;
@@ -5,11 +7,8 @@ import org.afeka.project.validation.plugin.xss.model.Token;
 import org.afeka.project.validation.plugin.xss.model.TokenType;
 import org.afeka.project.validation.plugin.xss.model.ValidatorFlag;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 

@@ -1,7 +1,6 @@
 package org.afeka.project.validation.plugin;
 
 import com.google.common.base.Charsets;
-import org.afeka.project.validation.plugin.sqli.libinjection.Libinjection;
 import org.afeka.project.model.AnalysisResultState;
 import org.afeka.project.model.http.HTTPMessage;
 import org.afeka.project.model.http.HTTPRequestLine;
@@ -25,7 +24,8 @@ public class SQLiModule implements ValidationModule {
               } catch (Exception ignored) {
               }
 
-              return new Libinjection().libinjection_sqli(data);
+              return false;
+//              return new Libinjection().libinjection_sqli(data);
             })
         .findAny()
         .map(x -> AnalysisResultState.BLOCK)

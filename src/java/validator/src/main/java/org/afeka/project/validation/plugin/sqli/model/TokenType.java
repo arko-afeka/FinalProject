@@ -1,4 +1,4 @@
-package org.afeka.project.validation.plugin.sqli.libinjection.model;
+package org.afeka.project.validation.plugin.sqli.model;
 
 
 import com.fasterxml.jackson.annotation.JsonValue;
