@@ -3,18 +3,18 @@ const createReverseProxyOptions = require("../lib/reverseProxy/reverseProxyOptio
 const options = createReverseProxyOptions({
   targetHost: {
     host: "localhost",
-    port: 8082,
+    port: 8080,
     protocol: "http:"
   },
   host: "localhost",
   port: 8081,
-  blocking: true
+  blocking: false
 });
 
 module.exports = {
   reverseProxyOptions: options,
   waf: {
     host: "localhost",
-    port: 8080
+    port: 8082
   }
 };

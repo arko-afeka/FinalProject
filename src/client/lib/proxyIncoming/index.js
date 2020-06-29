@@ -57,9 +57,11 @@ class ProxyIncoming extends http.IncomingMessage {
     var rawRequest = new ProxyIncomingRaw(this);
     rawRequest.appendToBody(this.body);
 
-    this.requestAnalyzer(rawRequest.getRaw(), (analysis) => {
-      this.onAnalized(analysis);
-    });
+    if (this.requestAnalyzer) {
+      this.requestAnalyzer(rawRequest.getRaw(), (analysis) => {
+        this.onAnalized(analysis);
+      });
+    }
   }
 
   /**
