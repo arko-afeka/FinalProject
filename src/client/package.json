@@ -13,7 +13,7 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.3",
     "chai-http": "^4.3.0",
-    "grpc": "^1.24.2",
+    "grpc": "^1.24.9",
     "utils-merge": "^1.0.1"
   },
   "devDependencies": {
